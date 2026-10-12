@@ -1,0 +1,246 @@
+---PAGE 1---
+View Reviews
+Paper ID
+2366
+Paper Title
+CLIP-CAT: Vision-Language Fusion Framework for Ordinal Cataract Grading on Few-Shot
+Data
+Reviewer #1
+Questions
+3. Please categorize the relevance of the paper (you may choose more than one).
+Note the different assessment criteria for the different paper categories as
+outlined in the Reviewer Guidelines:
+https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html
+MIC
+4. How would you describe the paper?
+Methodological contribution
+5. Please describe the main contribution of the paper.
+The paper proposes a vision-language framework, CLIP-CAT, for cataract grading that
+integrates global semantic features from a pretrained CLIP encoder with locally
+extracted fine-grained features via an adaptive patching mechanism, and introduces a
+rank-aware loss to model the ordinal nature of disease severity. By combining these
+components, the method aims to improve grading performance on small and
+imbalanced clinical datasets.
+6. Please list the major strengths of the paper. For example, you could highlight a
+novel formulation, an original way to use data, a demonstration of clinical
+feasibility, a novel application, a particularly strong evaluation, or anything else
+that is a strong aspect of this work. Please provide details, for instance, if a
+method is novel, explain what aspect is novel and why this is interesting.
+1）Clinically motivated ordinal modeling: The paper explicitly incorporates the ordinal
+nature of cataract grading via a rank-aware loss, which is well aligned with clinical
+practice where the severity levels follow a natural progression and large grading errors
+are more critical than minor ones.
+2）Reasonable integration of global and local feature learning: The proposed dual-
+branch design combines global representations from a pretrained CLIP encoder with
+locally extracted fine-grained features, which is intuitively suitable for capturing both
+overall lens structure and subtle opacity patterns under limited data conditions.
+7. Please list the major weaknesses of the paper. Please provide details: for
+instance, if you state that a formulation, way of using data, demonstration of
+
+---PAGE 2---
+clinical feasibility, or application is not novel, then you must provide specific
+references to prior work.
+1. Background and Problem Setting
+• Weak clinical motivation: The practical necessity of cataract grading based on slit-
+lamp images is not sufficiently justified. The paper lacks discussion on real deployment
+scenarios and does not clarify its advantages over other commonly used modalities
+(e.g., OCTA or fundus imaging).
+• Misleading “few-shot” claim: The paper does not follow a standard few-shot learning
+protocol (e.g., N-way K-shot setting), and is essentially trained on a small-scale dataset,
+making the claim potentially misleading.
+• Incomplete related work: The review of existing cataract grading and ordinal modeling
+methods is insufficient, leading to unclear positioning of the proposed approach within
+the literature.
+2. Methodological Limitations
+• Limited methodological novelty: The overall framework lacks a coherent design
+principle, and the components (global branch, local branch, text alignment, and ordinal
+loss) appear loosely connected, resembling an engineering combination rather than a
+unified modeling framework.
+• Questionable contribution of vision-language modeling: The prompt design is tightly
+coupled with class labels and essentially functions as a textual reformulation of labels.
+There is insufficient evidence that the model achieves genuine semantic understanding.
+• Lack of medical justification for local modeling: The entropy-based patch selection
+strategy lacks clinical grounding. Cataracts primarily manifest as opacity changes within
+the lens region, rather than increased texture complexity. High-entropy regions may
+arise from illumination variations, reflections, or noise, and do not necessarily
+correspond to pathological areas.
+• Unclear source of performance gains: The observed improvements may largely stem
+from the use of a stronger pretrained backbone and ordinal loss, rather than the
+claimed semantic reasoning mechanism.
+3. Limited data scale with risk of overfitting: The dataset contains only approximately
+2,000 images from a single center. Under such conditions, the model may overfit to
+fixed prompts and label structures, rather than learning robust representations.
+4. Experimental Design and Evaluation
+• Insufficient comparison: The set of compared methods is limited and does not include
+recent or task-specific approaches, making it difficult to convincingly demonstrate
+superiority.
+• Incomplete analysis: The paper lacks per-grade performance evaluation and
+confusion matrix analysis, making it unclear how the model performs across different
+severity levels.
+• Limited validation scope: Experiments are conducted on a single dataset only, with no
+broader validation to support the robustness of the conclusions.
+5. Presentation and Structural Issues
+• Inconsistency between figures and text: Fig. 1 includes components (e.g., multiple
+
+---PAGE 3---
+types of text inputs, Cross-Model Fusion, and report generation) that are not described
+in the main text, leading to inconsistencies in the method description.
+• Unclear figure representation: Fig. 2 contains multiple arrows and connections that are
+not clearly explained and do not align well with the textual description, making the figure
+difficult to interpret.
+• Lack of writing rigor: Some sections exhibit mismatches between subsection titles and
+content, along with promotional or imprecise descriptions, reducing the overall technical
+clarity and rigor of the paper.
+8. Please rate the clarity and organization of the paper.
+Poor
+9. Please comment on the reproducibility of the paper. Please be aware that
+providing code and data is a plus, but not a requirement for acceptance.
+The submission does not provide sufficient information for reproducibility.
+10. Code of Ethics Check. Based on your review and your understanding of the
+MICCAI Scientific Code of Ethics, do you believe this submission may involve a
+potential ethics concern or violation? Reviewers are expected to familiarize
+themselves with the MICCAI Scientific Code of Ethics before completing this
+assessment: https://miccai.org/index.php/about-miccai/policies/scientific-code-
+of-ethics/
+No
+13. Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1:
+reject). Please use the entire range of the distribution. Spreading the score helps
+create a distribution for decision-making.
+1. Strong Reject — must be rejected due to major flaws
+14. Please justify your recommendation. What were the major factors that led you
+to your overall score for this paper?
+The paper is not recommended for acceptance due to limited methodological novelty,
+insufficient justification of key design choices, small-scale data with potential overfitting,
+and incomplete experimental validation, which together weaken the overall contribution
+and credibility of the work.
+16. In view of your answers above and your overall experience, how would you
+rate your confidence in your review?
+Very confident (4)
+Reviewer #2
+Questions
+3. Please categorize the relevance of the paper (you may choose more than one).
+Note the different assessment criteria for the different paper categories as
+outlined in the Reviewer Guidelines:
+https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html
+
+---PAGE 4---
+MIC
+4. How would you describe the paper?
+Methodological contribution
+5. Please describe the main contribution of the paper.
+1. This paper proposes CLIP-CAT, a vision language modal that leverages medical text
+prompts to alleviate data scarcity and improve grading performance.
+2. It combines language-guided global semantic representations and localized fine-
+grained feature learning in a unified framework and introduces Adaptive Patching for
+enhanced local representation.
+3. It designs a Bidirectional Rank-Aware Loss that encourages unimodal probability
+distributions.
+6. Please list the major strengths of the paper. For example, you could highlight a
+novel formulation, an original way to use data, a demonstration of clinical
+feasibility, a novel application, a particularly strong evaluation, or anything else
+that is a strong aspect of this work. Please provide details, for instance, if a
+method is novel, explain what aspect is novel and why this is interesting.
+1. The paper is in good writing and easy to follow.
+2. The authors propose a practical approach to solve a realistic clinical problem.
+7. Please list the major weaknesses of the paper. Please provide details: for
+instance, if you state that a formulation, way of using data, demonstration of
+clinical feasibility, or application is not novel, then you must provide specific
+references to prior work.
+1. The authors don't present clear formula for the Bidirectional Rank Loss, which is a
+key part in this paper. The review cannot evaluate this paper without such important
+detail.
+2. The approach is lack of novelty. The authors introduce CLIP, global-local attention in
+their network, which are very popular nowadays.
+3. The evaluation of this approach is not enough. The authors only compare their
+method with two CNN models and one ViT model, which are not the state-of-the-art
+methods.
+8. Please rate the clarity and organization of the paper.
+Satisfactory
+9. Please comment on the reproducibility of the paper. Please be aware that
+providing code and data is a plus, but not a requirement for acceptance.
+The submission does not provide sufficient information for reproducibility.
+10. Code of Ethics Check. Based on your review and your understanding of the
+MICCAI Scientific Code of Ethics, do you believe this submission may involve a
+potential ethics concern or violation? Reviewers are expected to familiarize
+themselves with the MICCAI Scientific Code of Ethics before completing this
+assessment: https://miccai.org/index.php/about-miccai/policies/scientific-code-
+of-ethics/
+No
+
+---PAGE 5---
+13. Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1:
+reject). Please use the entire range of the distribution. Spreading the score helps
+create a distribution for decision-making.
+2. Reject — should be rejected, independent of rebuttal
+14. Please justify your recommendation. What were the major factors that led you
+to your overall score for this paper?
+As I mentioned in Weaknesses, the authors have to address several concerns about
+their model evaluation, method novelty, and approach details.
+16. In view of your answers above and your overall experience, how would you
+rate your confidence in your review?
+Very confident (4)
+Reviewer #3
+Questions
+3. Please categorize the relevance of the paper (you may choose more than one).
+Note the different assessment criteria for the different paper categories as
+outlined in the Reviewer Guidelines:
+https://conferences.miccai.org/2026/en/REVIEWER-GUIDELINES.html
+CAI
+4. How would you describe the paper?
+Methodological contribution
+5. Please describe the main contribution of the paper.
+The manuscript proposes CLIP-CAT, a vision–language fusion framework for ordinal
+cataract grading in few-shot settings, combining language-guided global semantic
+representations with localized fine-grained feature learning.
+6. Please list the major strengths of the paper. For example, you could highlight a
+novel formulation, an original way to use data, a demonstration of clinical
+feasibility, a novel application, a particularly strong evaluation, or anything else
+that is a strong aspect of this work. Please provide details, for instance, if a
+method is novel, explain what aspect is novel and why this is interesting.
+The key strength of the work is the incorporation of multi-granularity learning and a
+bidirectional rank-aware constraint in the classification loss, which is well aligned with
+the ordinal nature of cataract grading.
+7. Please list the major weaknesses of the paper. Please provide details: for
+instance, if you state that a formulation, way of using data, demonstration of
+clinical feasibility, or application is not novel, then you must provide specific
+references to prior work.
+However, the manuscript has several limitations:
+- The level of novelty appears limited, as similar vision–language and ranking-based
+approaches have been explored in prior work with various tasks.
+
+---PAGE 6---
+- The paper would benefit from substantial revision, as it currently reads more like a
+technical report than a well-structured academic manuscript.
+- Important training details for the encoders are missing, and the lack of publicly
+available code raises concerns regarding reproducibility.
+- The proposed approach has not been validated on external datasets, which limits
+confidence in its generalizability.
+- Providing confusion matrices would improve the interpretability of model performance
+across classes.
+- Overall, the technical contribution is not sufficiently strong or clearly articulated.
+8. Please rate the clarity and organization of the paper.
+Poor
+9. Please comment on the reproducibility of the paper. Please be aware that
+providing code and data is a plus, but not a requirement for acceptance.
+The submission does not provide sufficient information for reproducibility.
+10. Code of Ethics Check. Based on your review and your understanding of the
+MICCAI Scientific Code of Ethics, do you believe this submission may involve a
+potential ethics concern or violation? Reviewers are expected to familiarize
+themselves with the MICCAI Scientific Code of Ethics before completing this
+assessment: https://miccai.org/index.php/about-miccai/policies/scientific-code-
+of-ethics/
+No
+13. Rate the paper on a scale of 1-6, 6 being the strongest (6-4: accept; 3-1:
+reject). Please use the entire range of the distribution. Spreading the score helps
+create a distribution for decision-making.
+2. Reject — should be rejected, independent of rebuttal
+14. Please justify your recommendation. What were the major factors that led you
+to your overall score for this paper?
+The paper addresses an important problem and proposes a vision–language framework
+with multi-granularity and rank-aware learning. However, the overall contribution is
+limited by a lack of novelty, insufficient methodological details, and concerns regarding
+reproducibility. Additionally, the absence of external validation and limited performance
+analysis reduce confidence in the generalizability and impact of the proposed approach.
+16. In view of your answers above and your overall experience, how would you
+rate your confidence in your review?
+Very confident (4)
