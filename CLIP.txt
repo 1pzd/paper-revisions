@@ -1,0 +1,178 @@
+CLIP-CAT: Vision-Language Fusion Framework for Ordinal Cataract Grading on Limited and Imbalanced Data
+Shuang Wang1 ,Zhida Pang1
+1 School of Computer Science and Engineering, Northeastern University, Shenyang, China
+Abstract. Cataract is the leading cause of reversible blindness worldwide, yet automated grading remains challenging due to limited labeled data, severe class imbalance, and the inherently ordinal progression of the disease. Existing CNN-based approaches commonly treat cataract grading as a nominal classification task, overlooking the ordinal disease structure and under-utilizing medical prior knowledge. To address these challenges, we propose CLIP-CAT, a vision-language model that leverages medical text prompts to alleviate data scarcity and improve grading performance. Our approach combines language-guided global semantic representations and localized fine-grained feature learning in a unified framework. To mitigate the limitations of global encoders in detecting subtle lesions, we introduce Adaptive Patching for enhanced local representation. In addition, we design a Bidirectional Rank-Aware Loss that encourages unimodal probability distributions, effectively modeling the inherent ordinality of the task. Experiments on 1,673 slit-lamp images demonstrate that CLIP-CAT achieves 86.76% accuracy and 0.42 MSE, outperforming generic backbones and task-specific grading methods, with per-grade analysis and five-fold cross-validation confirming that errors concentrate on adjacent grades and that performance is stable.
+Keywords: Cataract Grading, Vision-Language Models, Limited-Scale Learning
+1Introduction
+While cataracts are the primary cause of reversible blindness worldwide, current diagnostic workflows rely heavily on subjective manual grading[1,2]. This labor-intensive approach is increasingly unsustainable given the rising prevalence of the disease and the scarcity of ophthalmologists in developing regions. Consequently, developing objective Computer-Aided Diagnosis systems is no longer just an option but a necessity to standardize grading and prevent avoidable blindness.
+Clinical Motivation and Imaging Choice. Slit-lamp imaging visualizes lens opacity directly and underpins the LOCS III grading standard [3], whereas fundus photography and OCT angiography primarily characterize retinal and choroidal structures and offer only indirect evidence of lens status. Automated cataract grading systems are therefore typically developed on slit-lamp or anterior-segment images [4-6], and we target this modality to stay consistent with clinical practice.
+Despite the success of deep learning in binary tasks, fine-grained clinical grading remains challenging due to three limitations. First, standard classification losses treat ordinal disease stages as independent classes, ignoring the progressive nature of severity (e.g., Grade 0 < Grade 5). Second, the inherent long-tailed distribution of medical data biases models toward majority classes, compromising sensitivity for rare, severe cases. Third, most black box models rely on low-level feature statistics rather than semantic reasoning, lacking the clinical priors necessary for robust generalization and interpretability[7-10].
+To address these challenges, we propose CLIP-CAT, a vision-language framework that mimics the clinical diagnostic workflow. The main contributions of this study are three-fold:
+1.A Multi-Granularity Vision-Language Framework: We introduce a unified framework that fuses global semantic anchors with local adaptive patching. This approach mimics the global-scan, local-focus strategy of human experts, enhancing the model's ability to detect subtle lesions missed by traditional encoders.
+2.Ordinal-Aware Optimization Objective: We propose a Bidirectional Rank-Aware Constraint that redefines the classification loss. By enforcing unimodal probability distributions and penalizing distance-based errors, we ensure predictions respect the strict logical progression of disease severity (e.g., Grade 0 < Grade 5).
+3.Robustness to Long-Tailed Distributions: We design a Prototype Smoothing strategy that maintains momentum-updated global class centers (Section 4.2) and combines it with prompt tuning. This stabilizes training on small, imbalanced clinical datasets, where minority grades are under-represented.
+2Related Work
+2.1Deep Learning for Cataract Grading
+Cataract grading has evolved from hand-crafted features to deep learning. CNN backbones [11,12] improve feature extraction but carry ImageNet domain bias, and Vision Transformers [13] risk overfitting on limited data. Task-specific systems incorporate clinical structure: CDRF-Net fuses discriminative region features with ordinal regression [5], and a LOCS III-based hybrid model aligns outputs with the clinical scale [6], while rank-consistent and kappa-based objectives penalize cross-grade errors [14,15]. Nevertheless, most existing methods treat grading as nominal multi-class classification, overlooking the intrinsic ordinal nature of disease severity[4-6,16].
+2.2Vision-Language Models in Medicine
+Vision-language models such as CLIP [17] align images and text in a shared embedding space, and parameter-efficient tuning methods facilitate downstream adaptation [18]. Medical applications have grown in radiology and pathology, yet ophthalmic adoption remains limited [19,20]. Standard contrastive alignment, moreover, does not preserve the ordinal topology of cataract severity. Unlike prior pipelines that attach ordinal losses to CNN features [5,15], this study couples vision-language alignment with a bidirectional rank-aware objective and grade-specific medical prompts.
+3Methodology
+3.1Framework Overview and Problem Definition
+As illustrated in Fig. 1, the proposed CLIP-CAT framework is designed to mimic the cognitive workflow of clinical ophthalmologists: Global Assessment  Local Refinement  Semantic Reasoning. The architecture consists of three synergistic components:
+岸Dual-Stream Visual Encoder: Integrating a global CLIP-based branch to capture anatomical structure with a local Adaptive Patching branch to isolate subtle lesion details. These streams are fused dynamically via an attention mechanism.
+岸Medical Prompt Engineering: Unlike traditional one-hot labels, we utilize expert clinical descriptions as semantic anchors. This projects visual features into a language-aligned space, enabling the model to understand medical severity.
+岸Bidirectional Rank-Aware Optimization: To address the ordinal nature of cataracts, we introduce a specialized loss function that penalizes predictions based on their distance from the true grade, enforcing a unimodal probability distribution.
+Given a slit-lamp image x, the model predicts the cataract severity grade G ﹋ {G0, G1, G2, G3, G4, G5}, where the severity is computed as the weighted sum of the nuclear color grade (NC, ranging from NC1 to NC6) and the posterior subcapsular opacity grade (P, ranging from P0 to P5), both following the LOCS III standard [13]. In this study, NC and P contribute equally (weight = 1) to determine the final severity. Higher grades indicate more severe cataracts.
+Our objective is to predict a probability distribution  that not only maximizes accuracy but also respects the ordinal topology of the disease. Specifically, the model must minimize the expectation of the ordinal distance loss , ensuring that severe cross-grade errors (e.g., confusing Grade 0 with Grade 4) are penalized more heavily than adjacent errors[14].
+3.2Visual Encoder
+CLIP-CAT fuses global semantics with local details via a dual-stream visual encoder.
+
+Fig. 1. Overview of the proposed CLIP-CAT framework: the global CLIP encoder and the local adaptive patching branch are fused via the attention mechanism, aligned with grade-specific medical prompts, and trained with the bidirectional rank-aware loss.
+The proposed CLIP-CAT framework integrates global semantics with fine-grained local details through a dual-stream visual encoder, as illustrated in Fig. 1.
+Global Branch.This branch is designed to capture the overall anatomical structure, illumination conditions, and gross pathological changes. We utilize the pre-trained CLIP image encoder (ViT-L/14) as the backbone. The global feature extraction is mathematically formulated as:
+
+Let  denote the input resized to . The encoder  maps high-dimensional pixels to a latent vector  (), preserving semantic alignment. To balance generic visual filtering with domain specificity, we employ a partial fine-tuning strategy: freezing the initial 12 layers while optimizing the subsequent 12 transformer blocks.
+Adaptive Patching Local Branch. Subtle lesions (e.g., peripheral cortical wedges) are often attenuated by the global pooling in standard ViTs. We address this via a three-stage Adaptive Patching mechanism:
+岸ROI Localization: Otsu thresholding and morphological closing are applied to segment the lens, isolating the ROI from background noise.
+岸Grid Sampling & Entropy Filtering: The ROI is partitioned into an  grid of patches . To prioritize lesion-rich regions, we compute the Shannon Information Entropy  for each patch:
+	                  (2)
+
+Feature Extraction: The selected patches are fed into a lightweight ResNet-50 encoder, denoted as . We favor a CNN architecture here over a Transformer because CNNs possess translation invariance and inductive biases that excel at extracting fine-grained texture features (e.g., the roughness of opacity). The unified local feature representation is obtained via average pooling:
+To effectively combine the holistic view from the global branch and the microscopic details from the local branch, we employ a learnable attention mechanism. The fusion process is defined as:
+
+
+In equations (4) and (5):
+ denotes the concatenation of the global and local feature vectors.
+ are the learnable weight matrix and bias vector of the attention layer, respectively.
+ is the Sigmoid activation function, which normalizes the output to a range of .
+ acts as an adaptive gating coefficient. It dynamically weighs the importance of the global context versus local details for each specific image.
+Finally,  is the weighted sum, ensuring that the final representation balances structural information with lesion-specific textures based on the predicted attention score.
+3.3Medical Prompt Engineering Mechanism
+Unlike traditional -way classifiers that map visual features to semantically meaningless one-hot vectors, CLIP-CAT injects expert medical priors via natural language. This transforms the classification task into a vision-language alignment problem.
+Prompts as Semantic Supervision, Not Label Rewriting. A label paraphrase would merely restate the class index in words and, once encoded, would remain dominated by surface form. Our templates instead describe the clinical appearance of each grade〞opacity density, color, and spatial pattern〞drawn from the LOCS III vocabulary [3]. The pre-trained text encoder maps these descriptions into a semantic space whose geometry reflects clinical similarity, so adjacent grades receive nearby anchors while distant grades are well separated. The model is therefore supervised by medical semantics rather than arbitrary class identifiers.
+Prompt Construction. We design a set of grade-specific templates  based on the LOCS III clinical standards. Each template  acts as a semantic anchor. As shown in Table 1:
+Table 1. Grade-specific text descriptions
+t0	A slit-lamp image showing G0 (minimal) cataract severity, corresponding to early-stage opacity with negligible impact on vision.
+t1	A slit-lamp image showing G1 (mild) cataract severity, with slight lens opacity visible on slit-lamp examination.
+t2	A slit-lamp image showing G2 (moderate) cataract severity, with moderate lens opacity and emerging visual symptoms.
+t3	A slit-lamp image showing G3 (significant) cataract severity, with pronounced opacity affecting daily visual function.
+t4	A slit-lamp image showing G4 (advanced) cataract severity, with dense lens opacity requiring intervention.
+t5	A slit-lamp image showing G5 (severe) cataract severity, with near-total lens opacification and severe vision impairment.
+
+Semantic Projection & Probability Calculation. These text descriptions are encoded by the pre-trained text encoder to produce semantic embeddings . The final classification probability  is computed via the temperature-scaled softmax of the cosine similarity between the fused visual feature  and the text embeddings :
+
+
+Detailed Explanation of the Formulation:
+岸: This term measures the alignment between the image and the text description. If the visual features of the patient's eye align geometrically with the semantic vector for dense white opacification, the dot product value increases. This forces the model to understand the medical description rather than just memorizing a label ID.
+岸:  is a learnable scaling factor (initialized at 0.07).
+岸Function: It controls the sharpness of the probability distribution. A lower  exaggerates the differences between the correct class and incorrect classes, making the distribution peakier.
+3.4Bidirectional Rank-Aware Loss
+
+Fig. 2. Illustration of the bidirectional distance penalty mechanism of the rank-aware loss: mass on grades below the true grade incurs an underestimation penalty, and mass above incurs an overestimation penalty, both weighted by ordinal distance.
+To make the optimization objective explicit, the focal component and the bidirectional rank-aware term are defined separately. The focal component reads:
+
+where p_t = p(y|x) denotes the predicted probability of the ground-truth grade, 汐_t is the class-balancing weight, and 污 = 2.0 down-weights well-classified samples so that hard tail-grade cases dominate the gradient[21].
+The bidirectional rank-aware term penalizes the expected ordinal distance between the predicted distribution and the ground-truth grade y:
+
+The first sum charges probability mass placed on grades below the true grade (underestimation), and the second charges mass placed above it (overestimation), so both directions are constrained simultaneously. The penalty grows linearly with the grade distance |c ? y|: adjacent confusions are tolerated, whereas remote confusions are heavily penalized. Minimizing the rank term therefore concentrates the probability mass on y and shapes a unimodal distribution centered on the ground truth, eliminating logically inconsistent long-span errors (e.g., confusing Grade 0 with Grade 4). Equivalently, the term equals the expected ordinal distance E[|c ? y|] under p(c|x), consistent with the objective stated in Section 3.1.
+
+This scheme utilizes Focal Loss () (equation 7) to mitigate class imbalance while leveraging the rank-aware term () (equation 8) for ordinal constraints. With  (equation 9), the system optimizes classification accuracy while ensuring consistency in grade distancing. This combined strategy ensures that even when misclassifications occur, predictions remain clustered within the neighborhood of the true grade, avoiding logically inconsistent long-range errors.
+4Experiments
+4.1Dataset Description and Long-tail Analysis
+To validate our framework, we curated a private clinical dataset of 1,673 slit-lamp images, with ground truth established by three senior ophthalmologists via consensus voting. Each image carries both a cortical grade (C0每C5) and a severity grade (NC1每NC6) on the LOCS III scale; this study targets joint severity grading, where each case is labeled with both a nuclear color grade (NC1每NC6) and a posterior subcapsular opacity grade (P0每P5). The final severity level G ﹋ {G0, G1, G2, G3, G4, G5} is computed as the weighted sum of NC and P (with equal weights). The distribution of the 1,673 cases across the six severity grades is, while the cortical labels (5/302/446/445/325/150 images over C0每C5) are reserved for future multi-task extension. The dataset exhibits a severe Long-tailed Distribution: the two head grades (NC2 and NC3) comprise 78.1% of samples, the mildest grade (NC1) accounts for 13.7%, and the two most severe grades (NC5 and NC6) together cover only 2.1%. Without intervention, this imbalance risks biasing the model toward the majority class (NC2) to minimize global loss, thereby failing to identify severe, sight-threatening cases.
+
+Fig. 4. Long-tailed distribution of the 1,673-image dataset over the six severity grades: the two head grades cover 78.1% of samples, while the two most severe grades cover only 2.1%.
+4.2Implementation Details
+Experiments were conducted on an NVIDIA RTX 4050 using PyTorch 1.12. We used the AdamW optimizer and a Cosine Annealing learning rate schedule (initial )[22]. Due to VRAM limits, the batch size was set to 8. To mitigate instability from small batches, we implemented momentum updates for global class centers. Focal Loss  was employed to suppress gradients from easy Grade 0 samples.
+All slit-lamp images were resized to 224 ℅ 224 before entering the encoders. The global branch partially fine-tunes the CLIP ViT-L/14 image encoder〞the first 12 transformer blocks are frozen while the remaining 12 blocks, the attention fusion layer, and the projection layers are trained〞and the text encoder provides a fixed pretrained semantic space remains frozen to preserve the pretrained CLIP semantic space. The dataset was split into training, validation and test subsets in a 7:1:2 ratio (1171/167/335 images); models were trained for 50 epochs with weight decay 0.01, and the checkpoint with the best validation performance was used for evaluation. Random horizontal flipping and mild color jitter were applied as data augmentation. The momentum coefficient of the prototype smoothing (global class center) update was set to 0.9. The temperature 而 of the semantic projection was initialized to 0.07 and learned end-to-end; the loss weight 竹 was 1.0; and K = 6 patches were retained per image. All results are averaged over 3 independent runs with different random seeds (42, 123, 2024) runs.
+4.3Results Analysis: Comparison with Baseline and Task-Specific Methods
+We benchmarked our CLIP-CAT against generic CNN backbones (ResNet50, DenseNet121), a Transformer backbone (ViT-B/16), CLIP transfer baselines (zero-shot and linear probing), an ordinal regression baseline (ResNet50 + CORAL), and two task-specific cataract grading methods (CDRF-Net and a LOCS III-based hybrid). The quantitative results are summarized in Table 2[5,6,11-13,15,17].
+Performance Superiority: CLIP-CAT outperforms the strongest baseline (CDRF-Net, 83.10%) by 3.66% in accuracy (86.76% vs. 83.10%) and exceeds the best generic backbone (ViT-B/16, 82.55%) by 4.21%. While CNN architectures like ResNet50 provide a reasonable baseline (78.45%), their relatively high Mean Squared Error (MSE = 1.24) suggests they struggle to capture the subtle, progressive nature of cataract severity.
+MSE Reduction & Clinical Safety: A critical contribution of our method is the reduction in MSE to 0.42 (computed on the expected predicted grade). In the context of ordinal regression, MSE reflects the distance of the error. An MSE of 0.42 implies an average prediction deviation of  grades. This indicates a Bounded Error property: even when CLIP-CAT misclassifies a sample, the prediction typically lands on the immediate neighboring grade, rather than making catastrophic errors. This property is vital for clinical safety, ensuring that the model's decision logic aligns with the continuous physiological progression of the disease. Furthermore, the high Kappa coefficient (0.88) confirms strong consistency with human expert grading[14].
+Transfer and Ordinal Baselines: Applying CLIP [17] in a zero-shot manner yields only 64.20% accuracy, and a linear probe on frozen CLIP features reaches 79.50%, indicating that the vision-language prior alone is insufficient for fine-grained grading. Equipping ResNet50 with the CORAL ordinal objective [15] raises accuracy to 80.30% and reduces MSE from 1.24 to 0.90, confirming the benefit of ordinal modeling, yet it remains well below CLIP-CAT. Among task-specific methods, CDRF-Net [5] and the LOCS III-based hybrid model [6] achieve 83.10% and 82.65%, respectively. Both incorporate domain priors and ordinal structure, so the remaining 3.66% accuracy advantage and lower MSE (0.42 vs. 0.72) of CLIP-CAT suggest that the joint global-local evidence aggregation and bidirectional rank-aware training provide complementary gains over existing pipelines.
+Table 2. Performance comparison with baseline and task-specific models.
+Method	Backbone	Accuracy (Acc)	MSE	Kappa
+ResNet50	CNN	78.45%	1.24	0.72
+DenseNet121	CNN	81.20%	0.98	0.76
+ViT-B/16	Transformer	82.55%	0.85	0.79
+CLIP zero-shot	CLIP ViT-L/14	64.20%	1.85	0.52
+CLIP (zero-shot)	64.20	1.85	0.52	0.73
+CLIP (linear probe)	79.50	1.05	0.73	0.75
+ResNet50 + CORAL	80.30	0.90	0.75	0.81
+CDRF-Net	83.10	0.72	0.81	0.80
+LOCS III hybrid	82.65	0.78	0.80	0.88
+4.4Ablation Study
+To verify the contribution of each component in our framework, we conducted a step-by-step ablation study. The results, detailed in Table 3, demonstrate the additive value of each module:
+岸Baseline (Row 1): The naive application of CLIP yields an accuracy of 80.15%. While promising, the domain gap between natural images and slit-lamp photography limits its precision.
+岸Impact of Local Patches (Row 2): Incorporating the Adaptive Patching Local Branch improves accuracy to 82.40%. This confirms that fine-grained local features are essential for capturing early-stage lesions that are often lost in global semantic tokens.
+岸Impact of Rank Loss (Row 3): The integration of Rank Loss provides the most significant improvement in error control, reducing the MSE from 0.92 to 0.55. This validates that explicitly penalizing non-ordinal predictions forces the model to learn the topological order of severity, effectively eliminating large-span outliers.
+岸Impact of Imbalance Strategy (Row 4): Finally, combining the weighted sampling and Focal Loss strategies addresses the long-tail issue, further boosting the accuracy to 86.76% and achieving the lowest MSE of 0.42.
+岸Impact of Entropy-Based Patch Selection (Rows 5每6): Replacing entropy-based top-K selection with random patch sampling lowers accuracy from 82.40% to 81.30% in the two-module setting and from 86.76% to 85.92% in the full model, while slightly increasing MSE. The gain of the local branch therefore stems from lesion-oriented patch prioritization rather than extra parameters. The entropy statistic is also clinically grounded: early cortical and nuclear opacities elevate local intensity heterogeneity, so high-entropy patches concentrate on lesion-rich regions without manual annotation.
+
+Fig. 3. Entropy-based patch selection: patches with high texture heterogeneity concentrate on the lens opacity region and are selected as the top-K informative local patches (K=6).
+岸Impact of Prompt Semantics (Row 7): Replacing the LOCS III text descriptions with learnable class tokens lowers accuracy from 86.76% to 85.10% and increases MSE from 0.42 to 0.50 . The benefit of prompt engineering therefore reflects the medical semantics of the descriptions rather than merely adding class-specific parameters.
+Table 3. Ablation study demonstrating the incremental improvements of each module. Rows 5每6 replace entropy-based selection with random patch sampling Row 7 replaces the text descriptions with learnable class tokens.
+No.	CLIP Base	Local Patches	Rank Loss	Imbalance Strategy	Accuracy	MSE
+1	﹟	-	-	-	80.15%	1.00
+2	﹟	﹟	-	-	82.40%	0.92
+3	﹟	﹟	﹟	-	84.85%	0.55
+4	﹟	﹟	﹟	﹟	86.76%	0.42
+Dual-branch only (random patches)	82.40	0.98	0.79	-	81.30%	0.98
+Full model (random patches)	85.92	0.46	0.87	﹟	85.92%	0.46
+w/o semantic text embedding	85.10	0.50	0.86	?	85.10%	0.50
+4.5Per-Grade Performance and Error Analysis
+Aggregate metrics do not reveal how errors distribute across the severity scale, which is decisive for clinical deployment. We therefore report per-grade precision, recall, and F1 (Table 4) together with the 6℅6 confusion matrix (Table 5) on the held-out test subset (335 slit-lamp images, reserved as a stratified 20% test split).
+Table 4. Per-grade precision, recall, and F1 of CLIP-CAT on the held-out test subset.
+Grade	Precision (%)	Recall (%)	F1 (%)	Support
+G0	89.6	93.5	91.5	46
+G1	93.2	90.8	92.0	152
+G2	89.2	82.7	85.8	110
+G3	53.8	70.0	60.9	20
+G4	37.5	75.0	50.0	4
+G5	66.7	66.7	66.7	3
+Macro avg	71.7	79.8	74.5	335
+Weighted avg	88.1	86.9	87.3	335
+Per-Grade Observations. The three head grades G0每G2 (NC1每NC3), which together comprise 91.9% of the test set, reach F1 scores of 91.5%, 92.0%, and 85.8%, whereas G3 (NC4) falls to 60.9%, echoing the sample scarcity analyzed in Section 4.1; the weighted F1 (87.3%) stays close to the overall accuracy in Table 2, while the macro F1 (74.5%) quantifies the residual long-tail gap. The two most severe grades retain only 4 and 3 test images (20 and 15 images in the full cohort), so their estimates (F1 50.0% and 66.7%) carry wide confidence intervals; dense opacity remains visually unambiguous, yet residual under-detection persists.
+
+Fig. 5. Confusion matrix on the held-out test set (335 images): errors concentrate on adjacent grades (40 of 44), and no sample deviates by three or more grades.
+Given a slit-lamp image x, the model predicts the cataract severity grade G ﹋ {G0, G1, G2, G3, G4, G5}, where the severity is computed as the weighted sum of the nuclear color grade (NC, ranging from NC1 to NC6) and the posterior subcapsular opacity grade (P, ranging from P0 to P5), both following the LOCS III standard [13]. In this study, NC and P contribute equally (weight = 1) to determine the final severity. Higher grades indicate more severe cataracts.
+Grade	G0	G1	G2	G3	G4	G5
+G0	43	3	0	0	0	0
+G1	5	138	8	1	0	0
+G2	0	7	91	10	2	0
+G3	0	0	3	14	2	1
+G4	0	0	0	1	3	0
+G5	0	0	0	0	1	2
+Error Topology and Clinical Implications. Among the 44 misclassified test images, 40 (90.9%) land on immediately adjacent grades, 4 (9.1%) deviate by two grades, and none deviate by three or more, substantiating the Bounded Error property claimed in Section 4.3 and keeping the expected-grade MSE at 0.42. Errors lean toward over-grading (27 vs. 17), so the clinically riskier direction〞under-grading of Grades 4每5〞occurs in only 2 test images (0.6%), and every such deviation remains within one grade. Confusions concentrate between neighboring mid-grades (e.g., G2?G3, 13 cases), which matches the continuous progression of nuclear opacity and explains why the rank-aware term remains effective.
+4.6Generalizability and Limitations
+Single-center datasets with severe long tails pose a genuine risk of overfitting, and the absolute scale of our cohort (1,673 images) is modest by contemporary standards. We therefore examine the stability of the reported results under resampling, summarize the regularization measures adopted during training, and state the remaining limitations explicitly.
+To quantify split sensitivity, we repeated the evaluation with 5-fold cross-validation over the full dataset: CLIP-CAT attains 86.1% ㊣ 0.85% accuracy, an MSE of 0.45 ㊣ 0.05, and a Kappa of 0.87 ㊣ 0.02 across folds. The mean accuracy closely tracks the single-split result of 86.76%, and the small standard deviation indicates that the performance does not depend on a favorable train/test partition.
+Several mechanisms constrain overfitting on this data scale. Only the upper 12 transformer blocks of the CLIP ViT-L/14 encoder, the attention fusion layer, and the projection layers are trainable, while the first 12 blocks and the text encoder remain fixed, reducing the number of parameters that must be learned from 1,400 training images. Training further applies random horizontal flipping and mild color jitter, weight decay, and momentum-based prototype smoothing (0.9) for stable class centers; the checkpoint with the best validation performance is selected for evaluation. The tight cross-validation variance above and the consistent ranking of modules in Table 3 suggest that the gain stems from architectural priors rather than dataset-specific memorization.
+External Validation Plan. All results reported in this work are obtained on one institution＊s slit-lamp images. A multi-center validation protocol is under preparation: the trained model will be applied without fine-tuning to cohorts collected from other centers and grading workflows, and any performance drift will be analyzed with the same per-grade and confusion-matrix methodology of Section 4.5. External validation results are not yet available, and we restrict our claims accordingly.
+Limitations. This study has three concrete limitations. First, the cohort contains 1,673 single-center images, so device- and population-specific biases cannot be excluded. Second, the long-tailed distribution leaves the two most severe grades with only 4 and 3 test images (20 and 15 images in the full cohort), so their per-grade estimates carry wide confidence intervals despite the bounded-error behavior observed in Section 4.5. Third, although labels follow LOCS III consensus grading by three senior ophthalmologists, comorbidities (e.g., corneal opacity) may still confound appearance-based grading, and external multi-center validation remains outstanding.
+5Conclusion
+In conclusion, this study presents CLIP-CAT, a vision-language framework designed to address the challenges of data scarcity, class imbalance, and ordinality in cataract grading. By combining adaptive patching for micro-lesion detection with a bidirectional rank-aware loss, our approach outperforms generic backbones and task-specific baselines while offering interpretable, semantic reasoning for clinical use. Although the current study is limited by a relatively small, single-center dataset and potential confounders from comorbidities, five-fold cross-validation indicates stable performance and we restrict our claims accordingly. Future work will prioritize multi-center external validation, refining prompt engineering, and exploring mixup-style augmentation[23] to enhance robustness against imaging artifacts and complex ocular conditions in real-world scenarios.
+References
+1.World Health Organization: World report on vision. World Health Organization, Geneva (2019)
+2.Saunders J C ,Oporia F ,Lukaszyk C , et al.Leave no one behind: An African perspective on the first World Health Organization Global Status Report on Drowning Prevention[J].African Journal of Emergency Medicine,2026,16(1):100944-100944.DOI:10.1016/J.AFJEM.2026.100944.
+3.Chylack, L.T., Wolfe, J.K., Singer, D.M., Leske, M.C., Bullimore, M.A., Bailey, I.L., Friend, J., McCarthy, D., Wu, S.Y.: The Lens Opacities Classification System III. Arch. Ophthalmol. 111(6), 831每836 (1993)
+4.Panthier C ,Zeboulon P ,Rouger H , et al.CATALYZE: A DEEP LEARNING APPROCH FOR CATARACT ASSESSEMENT AND GRADING ON SS-OCT ANTERION IMAGES.[J].Journal of cataract and refractive surgery,2024,DOI:10.1097/J.JCRS.0000000000001598.
+5.Liu X ,Song W ,Zhang Y , et al. Complementary discriminative region feature fusion network with ordinal regression for fine-grained nuclear cataract grading in AS-OCT images[J].Biomedical Signal Processing and Control,2026,112(PA):108455-108455.DOI:10.1016/J.BSPC.2025.108455.
+6.Tang G ,Zhang J ,Du Y , et al. Artificial intelligence in cataract grading system: a LOCS III-based hybrid model achieving high-precision classification[J].Frontiers in Cell and Developmental Biology,2025,131669696-1669696.DOI:10.3389/FCELL.2025.1669696.
+7.Courvoisier S D ,Garcia B D ,Buclin P C , et al. Beyond human gold standards: A multimodel framework for automated abstract classification and information extraction.[J].Research synthesis methods,2026,17(2):365-377.DOI:10.1017/RSM.2025.10054.
+8.Tao Y ,Xiao R ,Shi Y , et al. EnFuseNet: A Dual-Module approach combining tail-Class enhancement and dynamic fusion for long-Tail skin lesion diagnosis[J].Digital Signal Processing,2026,173105929-105929.DOI:10.1016/J.DSP.2026.105929.
+9.Jha T ,Tanveer N . Global standards, local realities: addressing disparities in the WHO classification of tumours ('Blue Books').[J].Journal of clinical pathology,2026,DOI:10.1136/JCP-2025-210608.
+10.Chen J ,Chen H ,Qin B , et al. Uniformity Preserving Transfer for Visual Prompt Tuning under Long-tailed Distribution[J].International Journal of Computer Vision,2026,134(3):100-100.DOI:10.1007/S11263-025-02712-Z.
+11.He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image recognition. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pp. 770每778 (2016)
+12.Huang, G., Liu, Z., Van Der Maaten, L., Weinberger, K.Q.: Densely connected convolutional networks. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pp. 4700每4708 (2017)
+13.Dosovitskiy, A., et al.: An image is worth 16x16 words: Transformers for image recognition at scale. In: International Conference on Learning Representations (ICLR) (2021)
+14.de la Torre, J., Puig, D., Valls, A.: Weighted kappa loss function for multi-class classification of ordinal data in deep learning. Pattern Recognit. Lett. 105, 144每154 (2018)
+15.Cao, W., Mirjalili, V., Raschka, S.: Rank consistent ordinal regression for neural networks with application to age estimation. Pattern Recognit. Lett. 140, 325每331 (2020)
+16.Kim W H ,Lee E J ,Kim I , et al. Comparison of active sentry and ozil handpiece in cataract surgery according to the grade of nucleosclerosis and challenging conditions.[J].International ophthalmology,2025,45(1):427.DOI:10.1007/S10792-025-03814-W.
+17.Radford, A., Kim, J.W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A., Mishkin, P., Clark, J., Krueger, G., Sutskever, I.: Learning transferable visual models from natural language supervision. In: International Conference on Machine Learning (ICML), pp. 8748每8763 (2021)
+18.Gao, P., Geng, S., Zhang, R., Ma, T., Fang, R., Zhang, Y., Li, H., Qiao, Y.: CLIP-Adapter: Better Vision-Language Models with Feature Adapters. Int. J. Comput. Vis. 132(2), 581每595 (2024)
+19.Chen Y ,Zhang Q ,Shi X , et al. PromptMix: LLM-aided prompt learning for generalizing vision-language models[J].Information Fusion,2026,131104186-104186.DOI:10.1016/J.INFFUS.2026.104186.
+20.Chen Z ,Zhao Z ,Su F , et al. Data-efficient generalization for zero-shot composed image retrieval[J].Pattern Recognition,2026,176113187-113187.DOI:10.1016/J.PATCOG.2026.113187.
+21.Lin, T.-Y., Goyal, P., Girshick, R., He, K., Doll芍r, P.: Focal loss for dense object detection. In: Proceedings of the IEEE International Conference on Computer Vision (ICCV), pp. 2980每2988 (2017)
+22.Loshchilov, I., Hutter, F.: Decoupled weight decay regularization. In: International Conference on Learning Representations (ICLR) (2019)
+23.Zhang, H., Cisse, M., Dauphin, Y.N., Lopez-Paz, D.: Mixup: beyond empirical risk minimization. In: International Conference on Learning Representations (ICLR) (2018)
