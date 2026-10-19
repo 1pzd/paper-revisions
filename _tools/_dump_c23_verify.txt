@@ -1,0 +1,20 @@
+LINES 390
+OLD_A_OCCURRENCES 1 (expect 1 = embedded as prefix of new paragraph)
+NEW_A_ANCHOR 1
+NEW_B_ANCHOR 1
+NEW_B_CTRL 1
+SELFREPRO_PTR_4.1 1
+SELFREPRO_NOTE_3.7 1
+CDRFF 7 / CDRF_single 0
+COUNT 86.76 = 9
+COUNT 0.42 = 11
+COUNT 83.10 = 5
+COUNT 82.65 = 3
+COUNT 3.66 = 2
+COUNT 0.72 = 3
+COUNT BiomedCLIP = 1
+COUNT four concrete limitations = 1
+--- L41 (2.2 end) ---
+Vision-language models such as CLIP (8) align images and text in a shared embedding space. Subsequent work scales contrastive pretraining and data pipelines (12-22), extends objectives toward multimodal generation and matching (23-25), and develops prompt-based and adapter-based adaptation for downstream transfer (26-39). In medicine, these models have mainly been applied in radiology and pathology, while ophthalmic adoption remains limited. In cataract assessment, deep grading systems built on clinical scales have been developed for slit-lamp and retro-illumination photographs (40), nuclear cataract diagnosis from slit-lamp video (41), and cortical cataract grading with clinical sub-scores (42), but these pipelines remain CNN- or Transformer-based classifiers without language-aligned semantics. Standard contrastive alignment, moreover, does not preserve the ordinal topology of cataract severity. Unlike prior pipelines that attach ordinal losses to convolutional neural network features (4,6,7), this study couples vision-language alignment with a Bidirectional Rank-Aware Loss and grade-specific medical prompts. The three components address three distinct failure modes of existing cataract grading systems: grade-specific medical prompts substitute semantic anchors for one-hot labels and compensate for limited annotated data; entropy-driven adaptive patch selection supplies fine-grained lesion evidence that global image tokens tend to average away, without requiring region-level annotations; and the distance-weighted bidirectional rank objective enforces the ordinal topology that generic contrastive alignment does not preserve. Individually, none of these mechanisms suffices, as the ablation study in Section 4.2 shows; their combination targets data scarcity, micro-lesion visibility, and ordinal consistency simultaneously, which is precisely the configuration in which prior task-specific pipelines typically improve only one axis.
+--- L167 (4.1) ---
+Applying CLIP (8) in a zero-shot manner yields only 64.20% accuracy, and a linear probe on frozen CLIP features reaches 79.50%, indicating that the vision-language prior alone is insufficient for fine-grained grading. Equipping ResNet50 with the CORAL ordinal objective (7) raises accuracy to 80.30% and reduces mean squared error from 1.24 to 0.90, consistent with the value of ordinal modeling in this experiment, yet it remains well below CLIP-CAT. Among task-specific methods, CDRFF-Net (4) and the LOCS III-based hybrid model (5), both re-implemented in-house under the identical protocol (Section 3.7), achieve 83.10% and 82.65%, respectively. Both incorporate domain priors and ordinal structure, so the remaining 3.66 percentage point accuracy advantage and lower mean squared error (0.42 versus 0.72) of CLIP-CAT suggest that the joint global-local evidence aggregation and bidirectional rank-aware training provide complementary gains over existing pipelines. The distinction from these methods is architectural rather than a matter of scale: the former fuses discriminative region features discovered inside a purely visual classifier, and the latter aligns outputs with the clinical scale without language-aligned semantics, whereas CLIP-CAT couples annotation-free, entropy-driven patch selection with grade-specific medical prompts and a distance-weighted bidirectional rank objective. The controls in Section 4.2, replacing entropy-based selection with random patch sampling and replacing medical descriptions with learnable class tokens, indicate that the gains stem from these design choices rather than from additional parameters.

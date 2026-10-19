@@ -1,0 +1,14 @@
+LINES 390
+GITHUB_PLACEHOLDER 1
+GITHUB_ANY 1
+BOTH_SEXES 1
+UPON_REQUEST 1
+PROTOTYPE_SMOOTHING 2
+BODY_WORDS_APPROX 6386
+COUNT 86.76 = 9 exp=9 OK
+COUNT 0.42 = 11 exp=11 OK
+COUNT CDRFF-Net = 7 exp=7 OK
+COUNT four concrete limitations = 1 exp=1 OK
+COUNT BiomedCLIP = 1 exp=1 OK
+COUNT G = ⌈(NC + C)/2⌉ = 2 exp=2 OK
+KEYWORDS_LINE Keywords: cataract grading, vision-language models, limited data learning, ordinal regression, class imbalance, medical image analysis

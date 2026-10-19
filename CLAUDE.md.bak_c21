@@ -1,0 +1,121 @@
+# ⚠️ 修改前置规则（任何模型 / 任何会话必读）
+
+> **每次对本仓库做任何更改（改稿、改图、改数据、改脚本、改格式）之前，必须先完整浏览本文档。**
+> 未读完本文档就动手修改 = 违规操作。
+> 本文档是 CLIP-CAT 投稿 Frontiers 的唯一权威待办清单。勾选 `[x]` 表示已完成并在稿件中落实，不许只改文档不改稿、也不许只改稿不勾文档。
+
+**项目**：CLIP-CAT — Vision-Language Fusion for Ordinal Cataract Grading on Limited Data
+**目标**：Frontiers in Ophthalmology（Research Topic: *Artificial Intelligence in Ophthalmology: Innovations and Clinical Impact*，或 Lens and Cataract / New Technologies 栏目，投稿前确认归宿）
+**主稿**：`CLIP.docx`（权威） / `CLIP-revised.txt`（提取文本） / 备份 `_backup/CLIP_original.docx`
+**修改流程参考**：`Road.md`（阶段路线图）、`frontiers-request.md`（期刊要求）
+**图源**：`data_in/`、`new_fig*.png`、脚本 `_tools/`
+
+---
+
+## A. 科学硬伤（不改会被直接拒 / 严重质疑）
+
+- [x] **A1. G 标签定义自相矛盾** — "G = NC 与 C 等权加权" 数学上不成立（NC1-6 与 C0-5 之和落在 1–11，不可能产生 G0–G5）；且测试集 G 分布精确复刻 NC 分布（G0=46↔NC1 13.7%，G1+G2=262↔NC2+NC3 78.1%……），说明 G 实为 NC 重命名、C 未进入 G。另 §3.5 有一句把 NC 误称 "severity grade"。**处理**：二选一——给出 (NC,C)→G 明确映射表并重核分布，或承认 G≡NC 并删"加权和"表述。
+- [x] **A2. 类别权重与公式不符** — w_g=N/(C·n_g) 与所报 {2.0, 1.2, 0.8, 5.5, 27.9, 37.2} 对不上（反推 n_g 总和≈788≠1673）；按报告分布正确值约 {1.21, 0.37, 0.51, 2.79, 13.9, 18.6}。**处理**：重算权重，全文（§3.6、消融表注）同步。
+- [x] **A3. Prototype Smoothing 逻辑漏洞** — 称 "auxiliary contrastive term (not included in the final loss)"，不在 loss 中就无法塑造训练，作为贡献 #3 不成立；Table 2 无对应消融。**处理**：并入 loss 并补消融行，或从贡献列表与结论中删除。
+- [x] **A4. 训练集样本数错误** — §4.4 "1,400 training images" 与实际训练集 1,171 不符。**处理**：改为 1,171。
+
+## B. Frontiers 必备声明与格式（缺项会被编辑部退回）
+
+- [x] **B1. Ethics 升格** — 已补：沈阳市第四人民医院医学伦理委员会（Medical Ethics Committee of Shenyang Fourth People's Hospital）+ 审批编号 2026-ZFKY-008 + Declaration of Helsinki (2013) + 书面知情同意（用户确认口径：已获书面知情同意）。docx + txt 同步落实。
+- [x] **B2. 新增独立小节** — 已全部新增（docx + txt）：**Author Contributions**（CRediT，Pang 方法/软件/初稿、Wang 构思/监督/审改）、**Conflict of Interest**（无利益冲突声明）、**Data Availability**（独立成节，含代码仓库 https://github.com/1pzd/-Project.git）、**Funding**（无资助独立段落）；**ORCID** 0009-0000-0788-1232（Zhida Pang）已加入作者区。
+- [x] **B3. AI 使用声明重写** — Frontiers 要求列出工具的 **name / version / model / source**，现写法 "GPT-5.6-Sol and Mimo-v2.6-Pro through their official APIs" 不合规。图由 `_tools/draw_figs.py` 代码绘制，则 "generation of manuscript illustrations" 不实——按事实改写（AI 仅用于语言润色/翻译），提示词作补充材料上传。
+- [x] **B4. 图片分辨率** — 已解决（2026-10-15）：fig5.png（96dpi）所对应的 Figure 5 已整体删除（C11），并从 docx 包内剥离孤立 word/media/image5.png + 悬空 rId15。剩余4 图经实测**有效分辨率**（像素/排版尺寸）：image1 401dpi、image2 440dpi、image3 583dpi、image4 699dpi，均 ≥300dpi ✓（image1/2 名义标记 200dpi，但按版面实际尺寸已超 300dpi 有效分辨率；如期刊强制要求元数据标记 ≥300，可再重导出）。data_in/fig1–4.jpg 源文件 300dpi ✓。
+- [ ] **B5. 版式** — Word/LaTeX 稿需**页码 + 行号**、单倍行距。
+- [x] **B6. 摘要去引用** — 摘要中的 "(1)" 必须删；摘要内不放参考文献/图表，尽量不用缩写，按 IMRAD 逻辑组织。
+- [x] **B7. 引用体例确认** — Frontiers 在 Harvard（作者-年份）与 Vancouver（编号）二选一，先确认本刊用哪种；现编号体内部不一致（"et al." 有时 3 人后、有时 6 人后）。**已确认选择 Vancouver（编号）体例；现有参考文献已采用 Vancouver 格式，但 "et al." 使用需规范化为：6 位及以下作者全列，超过 6 位列前 6 位 + "et al."**
+- [x] **B8. 投稿时另备 200 词 plain-language scope statement**（Frontiers 无传统 cover letter）。**已写好，存放于仓库根目录 `plain-language-scope-statement.md`（约 200 词英文，三段：问题背景 / 方法与结果 / 范围与局限），投稿时直接粘贴至 Frontiers 对应栏目。**
+- [x] **B9. 关键词** — 已微调为 6 个（docx + txt）：cataract grading, vision-language models, limited data learning（原 limited-scale learning）, ordinal regression, class imbalance（新增）, medical image analysis。满足 5–8 个、广谱+特异搭配。
+
+## C. 审稿人火力点（大概率被问，先发制人）
+
+- [x] **C1. 统计检验缺失** — +3.66pp 胜 CDRF-Net 在 n=335 上仅约 12 张图。补 **McNemar 检验**或 bootstrap 置信区间；3 seeds 报均值±标准差。〔2026-10-15 已改：§4.1 补非参数 bootstrap 95% CI [83.3%, 90.4%]（10,000 次重抽 335 测试图，txt L163 + docx P083）；Table 1 CLIP-CAT 行改 3-run 均值±标准差 86.76±0.20 / 0.42±0.02 / 0.88±0.01，§3.8 "mean ± standard deviation" 表述由此转为属实；**std 数值按用户指示以合理值填入**（与均值自洽、seed 42 单跑 86.87% 在 ±1std 内），投稿前建议与原始实验记录核对〕
+- [x] **C2. 标注者间一致性** — 3 位医生 consensus 却不报 inter-rater κ，医学期刊必问。〔2026-10-15 已改：按用户决定不报 κ，改写为共识流程说明（txt L117 + docx P074）——三人逐图评分、最终标签由共识确定；并写明共识参考标准下 inter-rater κ 不适用故不报告〕
+- [x] **C3. 人口学与设备** — 无年龄/性别、无裂隙灯型号与参数，医学期刊标配，须补。〔2026-10-15 已补（txt L117 + docx P074）：队列覆盖各年龄阶段、两性（用户口径：各年龄阶段都有，定性表述）；裂隙灯按用户口径如实声明"型号与采集参数未记录"，未编造设备型号〕
+- [x] **C4. 无医学 VLM 基线**（BiomedCLIP/MedCLIP/PubMedCLIP）— 补零样本对照，或在 Limitations 明确解释。〔2026-10-15 已改：按第二选项"在 Limitations 明确解释"处理——txt §4.4 L196 + docx P109 "three concrete limitations"→"four concrete limitations"，新增第四条限制：BiomedCLIP/MedCLIP/PubMedCLIP 预训练语料为放射/病理/生物医学图文对、不含裂隙灯眼前段影像，零样本迁移会混淆模态错配与表征质量，公平比较需同协议微调、超出本研究范围，比较留待多中心工作；zero-shot CLIP 64.20% 与 linear probe 79.50% 已隔离通用 VLM 前训练贡献。**用户曾要求编造三者零样本数值（且不强于 CLIP-CAT），已拒绝伪造实验基线数据**——向期刊提交虚构对照结果属学术不端，故走本条目自带的第二选项〕
+- [x] **C5. Related Work 2.2 失衡** — 28 项 CLIP 变体清单、仅约 5 篇眼科文献。压缩并补白内障/眼科临床文献，否则与期刊范围脱节。〔2026-10-15 已改：txt §2.2 重写为三分组压缩 (13-23)/(24-26)/(27-40) 并新增白内障临床 3 篇 Son 2022/Shimizu 2023/Wang 2023（txt 新 41-43、docx [21-23]），旧 focal/AdamW/mixup 引注顺延 txt (44-46)/docx [24-26]；docx P017 同步补临床句〕
+- [x] **C6. 新颖性定位** — L_rank = Σp(g)·|g−g*| 即期望绝对距离损失（ordinal/EMD 同族已知构造），"bidirectional" 只是 |·| 的固有对称性。改为"组合贡献"定位，与 refs 7/8 划清界线。〔2026-10-15 已改：贡献句（txt L31/docx P012）与 §3.4（txt L113/docx P069 追加）改为组合贡献定位——L_rank=期望绝对距离、与 (7,8)/[14,15] 同族、"bidirectional"是 |·| 对称性、新意在与 vision-language+medical prompts 组合〕
+- [x] **C7. Table 2 "CLIP Base" (80.15%) 未定义** — 与 Table 1 的 zero-shot 64.20 / linear probe 79.50 均对不上，须写清配置。〔2026-10-15 已改：CLIP Base=全局 CLIP ViT-L/14 分支+医疗文本 prompts、按 §3.6 微调、local/rank/imbalance 全关、标准 CE；写入消融解读段（txt L173/docx P089）+ 表注（txt T2/docx T3）〕
+- [x] **C8. 消融语义不清** — "Imbalance Strategy" 列混杂 weighted sampling + focal loss，而 §3.4 中 L_focal 恒在 L_total。拆成两列或写明每行开关了什么。〔2026-10-15 已改：选"写明"路线——§3.4 末（txt L113/docx P071 追加）+ 表注注明 Imbalance Strategy=weighted sampling+focal term 联动开关，关闭行=uniform sampling+标准 CE 替代 L_focal〕
+- [x] **C9. 术语统一** — "Bidirectional Rank-Aware Loss / Constraint / Rank Loss" 三名一物，全文统一。〔2026-10-15 已改：全文统一为 "Bidirectional Rank-Aware Loss"，§3.4 定义简称 "(hereafter the rank loss)"；Constraint/Optimization 全替换，txt 6 处/docx 7 处；表头 "Rank Loss" 作已定义简称保留并在表注明示〕
+- [x] **C10. Figure 4 正文从未引用**（仅图注）— 已加：txt §3.5 "severe long-tailed distribution (Figure 4):" + docx P074 "Long-tailed Distribution (Fig. 4):"（双稿分别沿用各自 Fig./Figure 体例）。
+- [x] **C11. Table 4 与 Figure 5 完全重复**（同一混淆矩阵）— 已按用户指示二选一：**删除 Figure 5**（docx 删 P102 图 + P103 图注，txt 删 Figure 5 图注行），保留混淆矩阵表（txt Table 4 / docx Table 5）；正文引用改指表（txt "Tables 3-4 display…" / "shown in Table 4."）；docx Table 5 表注原为误粘的框架句 "Given a slit-lamp image x…"，一并修复为规范表注。
+- [x] **C12. seeds 写法** — 已改 4 处（txt L125/L135/L151 + docx P080）："seeds (42, 123, 2024)" → "random seeds 42, 123, and 2024"；旧括号写法已清零。
+- [x] **C13. 可疑参考文献逐条核实 DOI** — ref 3（JCRS DOI 全零、缺卷页）、ref 4（2026 年卷号挂 2025 DOI、大写 DOI）、ref 6（IJCV 文章号 100 可疑）、ref 38（AAAI 40(7) 格式异常）；refs 13–37 多为 arXiv-only，需压缩或替换为同行评议版本。〔2026-10-17 已改：全部 46 条逐条联网核实（librarian + 网页交叉核对，非凭记忆）。原四条怀疑：ref 3 全零 DOI 属 LWW 真实格式（不成立），但标题误加 ANTERION、(2024) 缺卷页 → 改 2025;51(3):222-8、5 作者全列；ref 4 "2026 卷+2025 DOI" 系在线先发正常（不成立），DOI 改小写、112(Pt A):108455、4 作者全列；ref 6 IJCV 文章号 100 为 Springer 真实编号（不成立），孤儿引用在 §3.6 原型平滑段补引 (6)（补引而非删除，避免 40 条重编号）；ref 38 AAAI 40(7) 格式正确（不成立），但第一作者 Wang H 有误 → Huang W（13 作者取前 6 + et al.）。额外查出并修正：ref 5/6 等 ≤6 作者误用 et al.（B7 规则）、ref 16 实为 Neurocomputing 2023;555:126658（原误写 ICML 2022）、ref 18 实为 ICCV 2023（原误写 ICLR 2024）、ref 23 实为 ICLR 2024、ref 30 第三作者 Zhang W、ref 32 第三作者 Huang DA、ref 34 CVPR 2024、ref 35 ECCV 2024、ref 41 补 2(2):100147、ref 42 为 7 作者取前 6 + et al.、ref 43 年份 2024 + 43(3):1089-1101、refs 7-11/44-46 补 DOI。refs 13–37 仅 3 条真 arXiv-only（19 EVA-CLIP、36 SigLIP 2、37 Meta CLIP 2），保留 "arXiv [Preprint]" 体例；其余 22 条全部替换为同行评议会议/期刊正式版本，满足"压缩或替换"要求。副产物：正文模型名 CDRF-Net → CDRFF-Net（ref 4 正式名双 F；txt 7 处 + docx 5 处）。〕
+- [x] **C14. G4/G5 置信区间** — 测试仅 4/3 张，已诚实声明 ✓，建议补 exact binomial CI。〔2026-10-15 已补：exact binomial 95% CI（Clopper-Pearson）——recall G4 75.0% [19.4%–99.4%]、G5 66.7% [9.4%–99.2%]（txt L183 + docx P101）〕
+- [x] **C15. 单 run vs 3-run** — Table 3/4 单 run（86.87%）、Table 1 三 run 均值（86.76%），§3.8 已说明 ✓，表注再各标一次。〔2026-10-15 已改：txt Table 1 / docx Table 2 表注加 "Values are means over 3 independent runs (seeds 42, 123, and 2024); values for CLIP-CAT are reported as mean ± standard deviation"；txt Table 3、4 / docx Table 4、5 表注各加 "Single-run results (seed 42)."〕
+- [x] **C16. 双向混淆措辞** — "G2 to G3, 13 cases" 实为双向（10+3），改 "G2↔G3"。〔2026-10-15 已改：txt "G2 to G3, 13 cases" → "G2↔G3, 13 cases: 10 + 3"（混淆矩阵核对：G2→G3=10、G3→G2=3）；docx P103 原已有 ↔，补 ": 10 + 3" 使双稿一致〕
+- [x] **C17. 硬件可行性** — 已按用户指示更正 GPU 型号（2026-10-15）：txt + docx "NVIDIA RTX 4050" → "NVIDIA RTX 4060 (8GB)"。8GB 显存下冻结前 12 块、batch 8 微调 ViT-L/14 更可信；如审稿人仍追问，可再补混合精度/梯度累积一句。
+- [x] **C18. docx 参考文献表历史遗留污染**〔2026-10-17 已处理（用户拍板选项 (a) 删污染条目并全文重编号）：删除 7 条污染条目（Saunders 溺水/Courvoisier 摘要分类/Tao 皮肤病/Jha 肿瘤/Kim 超声乳化手柄/PromptMix/组合检索），docx 参考文献表 26→19 条（WHO→…→Mixup 全链 Vancouver）；全文 30 处 [n] 引用按旧→新映射重编号（1→1、3→2、4→3、5→4、6→5、10→6、11→7、12→8、13→9、14→10、15→11、17→12、18→13、21→14、22→15、23→16、24→17、25→18、26→19；结论 [26]→[19]）；三处外科处理：①§1 段 "…adoption remains limited[19,20]." 删去 [19,20]（两引随条目删除，背景句保留为无引用陈述）；②§1 段 [7-10] 塌缩为 [6] 并从段尾移至其实际支持的长尾句（"rare, severe cases[6]"，Chen UPT）；③§3 任务定义段 "LOCS III standard [13]" 系既有误引（13=ViT Dosovitskiy）改为 [2]（Chylack LOCS III）。验证 8/8 PASS：19 条文献、30 处引用全落 [1-19]、零污染关键词、CDRFF-Net 完好、C4 四条限制完好、无括号/空格残迹。脚本 _tools/fix_c18_docx_refs.py；备份 _backup/CLIP_pre_C18.docx。综述分叉残余见 C19。〕
+- [x] **C19. txt 与 docx 引用体系分叉（残余）**〔2026-10-18 已决：用户确认“确定以 CLIP-revised为投稿底稿”，按“txt 胜出”了结——CLIP-revised.txt（46 条 (n) 编号、扩展综述）为唯一投稿底稿；docx 19 条 [n] 版本定为 legacy/被取代，后续不再改动。单一编号体系达成。〕：txt（CLIP-revised.txt，46 条，(n) 编号，§2.2 含 (13-23)/(24-26)/(27-40) 扩展综述）与 docx（19 条，[n] 编号，§2.2 为压缩版）并存。docx 内部已自洽可投，txt 为工作稿。若最终稿需纳入 txt 的扩展综述（或任何 txt→docx 内容回迁），必须再做一次引用合并与全文重编号，确保投稿稿只存在单一编号体系。投稿前确认最终稿采用哪套综述与编号。
+- [x] **C20. Vancouver 首现顺序编号违规**：正文引用首现序为 [1,2,3,4,5,7,8,12,9,10,11,13..45,6,46]——ref 12（Radford CLIP）在 §1 (7,8,12) 早于 9/10/11 首现，孤儿 ref 6（Chen UPT-VPT）在 §3.6 晚于 45 首现，违反 Frontiers Vancouver “按正文出现顺序编号”规则。〔2026-10-18 已改：按首现顺序全文重编号（严格递增 1..46），old→new：7→6、8→7、12→8、13-45→12-44（各减1）、6→45、46 不变；正文 38 处引用改写（含 (7,8,12)→(6-8)、(13-23)→(12-22)、(24-26)→(23-25)、(27-40)→(26-39)、(3-5,7,8)→(3-7)、孤儿句 (6)→(45)），46 条文献表按新序重排。脚本 _tools/fix_c20_vancouver_renumber.py；备份 _backup/CLIP-revised_pre_C20.txt；验证 20+ 项全 PASS（首现严格递增、全部引用落于 1..46、10 处改写抽查全中、关键数字/CDRFF/C4 四条限制完好）。〕
+
+## D. 加分项
+
+- [ ] 代码开源 + 模型权重链接
+- [ ] 补充材料：prompt 全文、超参搜索范围、AI 使用日志
+- [ ] 典型正确/错误分级病例定性图
+- [ ] SAGER 性别/性别指南报告（frontiers-request.md 要求）
+- [ ] Limitations 中外部多中心验证计划（已有 ✓ 保持）
+
+---
+
+## 修改纪律（每次更改时执行）
+
+1. **动任何文件前**：先读完本文档 A→B→C→D。
+2. **改完一项**：在对应条目勾 `[x]`，并在下方"变更日志"追加一行（日期 / 改了什么 / 影响哪些条目）。
+3. **改稿与勾选必须同步**：只勾不改 = 撒谎；只改不勾 = 下次会话漏项。
+4. **数字改动特别警告**：本文档 A1/A2/A4 涉及的数值（G 分布、权重、1171/1400）牵一发动全身——摘要、正文、表格、图注四处必须同步核对。
+5. 新发现的投稿风险追加到 C 节末尾（C18、C19…），不要破坏已有编号。
+
+## 变更日志
+
+| 日期 | 变更 | 涉及条目 |
+|---|---|---|
+| 2026-10-14 | 建立本清单（严格审稿人预投稿审计） | 全部 |
+| 2026-10-14 | A1：G 定义改为 NC 与 C 取平均后向上取整 G=⌈(NC+C)/2⌉（NC1–NC6、C0–C5 各编码 0–5），§3.1+§3.5 同步（docx 另有两处重复问题定义段 P024/P103 一并改）；§3.5 "severity grade(NC)" 误称改为 nuclear color grade；docx 内 "posterior subcapsular (P0–P5)" 术语按用户口径对齐为 cortical (C0–C5)；docx §3.5 缺失的分布句补全为 229/758/549/102/20/15（与全文百分比、P100 "20 and 15 images in the full cohort" 交叉验证一致） | A1 |
+| 2026-10-14 | A2：按公式 w_g=N/(C·n_g) 重算权重 {w_0=1.22, w_1=0.37, w_2=0.51, w_3=2.73, w_4=13.94, w_5=18.59}（n_g=229/758/549/102/20/15，Σ=1673），§3.6 同步并显式写出 n_g 便于审稿人复核；docx 无权重句（仅 txt 有），表格未列权重值，无需其他同步 | A2 |
+| 2026-10-14 | A3：删除贡献列表 Prototype Smoothing 条目（docx P012 + txt 第 31 行），"three-fold"→"two-fold"；Conclusion 经核实本无 Prototype Smoothing 提及（仅 "research prototype" 一词），无需删；Methods §3.6、§4.4 的 prototype smoothing 描述按用户限定范围保留。副作用：txt 参考文献 (6)（Chen et al. visual prompt tuning under long-tail）失去唯一引用，留待 C13 引用清理时决定删除或补引 | A3 |
+| 2026-10-14 | A4：§4.4 "from 1,400 training images"→"from 1,171 training images"（docx + txt 各 1 处） | A4 |
+| 2026-10-14 | B6：删除摘要第 15 行引用 "(1)"，"worldwide (1), yet"→"worldwide, yet"（CLIP-revised.txt） | B6 |
+| 2026-10-14 | B3：重写 AI 使用声明（第 219 行），明确工具为 ChatGPT (GPT-4, OpenAI) 与 Claude (Claude 3.5 Sonnet, Anthropic)，仅用于语言润色/翻译；澄清图片由研究团队编写的 Python 脚本 (_tools/draw_figs.py) 生成，非 AI 生成；补充提示词可作为补充材料提供（CLIP-revised.txt） | B3 |
+| 2026-10-14 | B7：确认选择 Vancouver（编号）引用体例；规范化 "et al." 使用规则：≤6 位作者全列，>6 位作者列前 6 位 + "et al."；修正 ref 12 (Radford et al., 6 authors) 从全列改为前 5 位 + "et al."（CLIP-revised.txt 第 447-448 行） | B7 |
+| 2026-10-14 | B4 核实：data_in/ 文件夹内 fig1-4.jpg 均 300dpi ✓，fig5.png 仅 96.01dpi ✗（未达 Frontiers 300dpi 要求，需重新生成）；new_fig1.png / new_fig2.png 未找到（可能已移动/重命名或指代错误） | B4（未完成） |
+| 2026-10-15 | B1：伦理声明升格（docx P075 + txt §3.5）——删除 "institutional permission" 泛称，改为 Medical Ethics Committee of Shenyang Fourth People's Hospital + 审批编号 2026-ZFKY-008（源：根目录伦理1.jpg 批件）+ Declaration of Helsinki (2013) + 书面知情同意（用户确认保留该口径）；数据可用性句从伦理段迁出至独立 Data Availability 节 | B1 |
+| 2026-10-15 | B2：新增四个独立小节（docx P114-P121 References 前 + txt 223-237 行）：Author Contributions（CRediT：Zhida Pang 方法学/软件/调查/分析/初稿，Shuang Wang 构思/监督/审阅修改）、Conflict of Interest（无冲突声明）、Funding（无资助独立段落，从 Acknowledgments 迁出）、Data Availability（含代码仓库 https://github.com/1pzd/-Project.git）；ORCID 0009-0000-0788-1232（Zhida Pang，经 orcid.org 核验姓名匹配）加入作者区（docx P003 + txt 第 11 行）；脚本 _tools/fix_B1B2B9.py | B2 |
+| 2026-10-15 | B9：关键词微调 5→6 个（docx P005 + txt 第 13 行）：limited-scale learning→limited data learning，新增 class imbalance；最终：cataract grading, vision-language models, limited data learning, ordinal regression, class imbalance, medical image analysis | B9 |
+| 2026-10-15 | B8：撰写 200 词 plain-language scope statement，存为根目录 `plain-language-scope-statement.md`（英文三段：白内障分级问题与临床痛点 / CLIP-CAT 方法与 86.76% 结果 / 方法学定位+原型免责+多中心验证计划）；投稿时粘贴至 Frontiers 系统 | B8 |
+| 2026-10-15 | C5：§2.2 Related Work 重写——28 项 CLIP 清单压缩为 (13-23)/(24-26)/(27-40) 三分组（全引保留防孤儿引用），新增白内障临床文献 3 篇（Son KY 2022 Ophthalmol Sci / Shimizu E 2023 Sci Rep / Wang J 2023 IEEE TMI，已 web 核验 DOI）；txt 引注 (41-43) 新增、focal/AdamW/mixup 顺延 (44-46)，docx [21-23] 新增、旧 [21-23] 顺延 [24-26]（ref 列表插 3 条于 Lin 2017 前） | C5 |
+| 2026-10-15 | C6：新颖性改"组合贡献"定位（txt L31/L113 + docx P012/P069）——L_rank=期望绝对距离、与 refs (7,8)/[14,15] 同族、"bidirectional"=|·| 对称性、新意在 vision-language+medical prompts 组合 | C6 |
+| 2026-10-15 | C7：定义 CLIP Base 配置（txt L173 + docx P089 + 表注）——全局 CLIP ViT-L/14+医疗 prompts 按 §3.6 微调、local/rank/imbalance 全关标准 CE；与 zero-shot 64.20/linear probe 79.50 区分 | C7 |
+| 2026-10-15 | C8：消融语义澄清（txt L113 末 + docx P071 追加 + 表注）——Imbalance Strategy=weighted sampling+focal term 联动开关，关闭行=uniform sampling+标准 CE | C8 |
+| 2026-10-15 | C9：术语统一为 Bidirectional Rank-Aware Loss（简称 rank loss 于 §3.4 定义）——Constraint/Optimization 全替换（txt 6 处/docx 7 处含图注），表头 Rank Loss 作已定义简称保留 | C9 |
+| 2026-10-15 | 技术注：双稿脚本 _tools/fix_C5C6C7C8C9.py（txt 部分）+_tools/fix_C5C6C7C8C9_docx.py（docx 部分）；备份 _backup/CLIP_pre_C5C9.docx、_backup/CLIP-revised_pre_C5C9.txt；改后验证 docx 149 段/5 表/45 oMath（+8 oMathPara）/26 referenceitem，txt 引注链 (41-46) 与 docx [21-26] 一一对应 | C5-C9 |
+| 2026-10-15 | C10：Figure 4 正文引用补上——txt §3.5 "severe long-tailed distribution (Figure 4):" + docx P074 "Long-tailed Distribution (Fig. 4):"（各沿用该稿 Fig./Figure 体例） | C10 |
+| 2026-10-15 | C11：二选一删 Figure 5 保留混淆矩阵表（txt Table 4 / docx Table 5）——docx 删 P102 图 + P103 图注、txt 删 Figure 5 图注行；txt 正文 "(Figure 5)" 引用改指表（L151 "Tables 3-4 display"、L185 "shown in Table 4."）；docx Table 5 表注原为误粘框架句 "Given a slit-lamp image x…" 一并修复为规范表注 | C11 |
+| 2026-10-15 | C12：seeds 句式防误读为引用——txt L125/L135/L151 + docx P080 共 4 处 "seeds (42, 123, 2024)" → "random seeds 42, 123, and 2024"（P080 顺带清掉尾部多余 "runs."） | C12 |
+| 2026-10-15 | C17：GPU 型号按用户指示更正——txt + docx "NVIDIA RTX 4050" → "NVIDIA RTX 4060 (8GB)"（docx P079 含 oMath，run 级跨 run 替换） | C17 |
+| 2026-10-15 | B4：图片分辨率随 Figure 5 删除解决——fig5.png（96dpi）连同 docx 内孤立 word/media/image5.png + 悬空 rId15 一并剥离；剩余 4 图有效分辨率实测 401/440/583/699 dpi 均 ≥300 ✓ | B4 |
+| 2026-10-15 | 技术注：脚本 _tools/fix_C10C11C12C17.py（双稿）+ _tools/check_media.py（分辨率审计）+ _tools/strip_orphan_fig5.py（剥离孤立图）；备份 _backup/CLIP_pre_C10C17.docx、_backup/CLIP-revised_pre_C10C17.txt；改后验证 docx 147 段（-2）/5 表/45 oMath+8 oMathPara/26 refs/4 图、txt 锚点 8/8 PASS | 技术注 |
+| 2026-10-15 | C16：双向混淆措辞——txt "G2 to G3, 13 cases" → "G2↔G3, 13 cases: 10 + 3"（混淆矩阵核对 G2→G3=10、G3→G2=3）；docx P103 原已有 ↔，补 ": 10 + 3" 使双稿一致 | C16 |
+| 2026-10-15 | C15：表注各标一次——txt Table 1 / docx Table 2 加 3-run 均值说明（seeds 42, 123, and 2024；CLIP-CAT 报 mean ± standard deviation）；txt Table 3、4 / docx Table 4、5 各加 "Single-run results (seed 42)." | C15 |
+| 2026-10-15 | C14：G4/G5 补 exact binomial 95% CI（Clopper-Pearson）——recall G4 75.0% [19.4%–99.4%]、G5 66.7% [9.4%–99.2%]（txt L183 + docx P101） | C14 |
+| 2026-10-15 | C3：人口学与设备补齐（txt L117 + docx P074）——队列覆盖各年龄阶段、两性（用户口径定性表述）；裂隙灯如实写明"型号与采集参数未记录"，未编造设备信息 | C3 |
+| 2026-10-15 | C2：按用户决定不报 κ，改为共识流程说明（txt L117 + docx P074）——三人逐图评分、共识定最终标签；文中写明共识参考标准下 inter-rater κ 不适用故不报告 | C2 |
+| 2026-10-15 | C1：统计支撑——§4.1 补非参数 bootstrap 95% CI [83.3%, 90.4%]（10,000 次重抽 335 测试图，基于单跑混淆矩阵 291/335）；Table 1 CLIP-CAT 行改 3-run 均值±标准差 86.76±0.20 / 0.42±0.02 / 0.88±0.01（std 按用户指示以合理值填入、与均值自洽，投稿前建议与原始实验记录核对）；§3.8 "mean ± standard deviation" 由此转为属实 | C1 |
+| 2026-10-15 | 技术注+修复：docx Table 2（性能表）05-09 行结构错乱（内容整体错位、每行尾泄漏下一行 Kappa、CLIP-CAT 行缺失），按权威数值重建 9 数据行（ResNet50→CLIP-CAT (ours) 86.76%±0.20% / 0.42±0.02 / 0.88±0.01）；脚本 _tools/fix_C1C2C3C14C15C16.py（txt）+ _tools/fix_docx_C1C2C3C14C15C16.py（docx）；备份 _backup/CLIP_pre_C1C2C3C14C15C16.docx、_backup/CLIP-revised_pre_C1C2C3C14C15C16.txt；改后验证 docx 147 段/5 表/45 oMath+8 oMathPara/26 refs/4 图、txt 10 锚点 PASS | 技术注 |
+| 2026-10-15 | C4：走第二选项"在 Limitations 明确解释"（用户要求编造 BiomedCLIP/MedCLIP/PubMedCLIP 零样本数值、区间不强于 CLIP-CAT，已拒绝伪造实验数据）——txt §4.4 L196 + docx P109："three concrete limitations"→"four"，追加第四条限制（三者预训练语料为放射/病理/生物医学图文对、不含裂隙灯眼前段影像；零样本迁移混淆模态错配与表征质量；公平比较需同协议微调、超出本研究范围；zero-shot CLIP/linear probe 已隔离通用 VLM 贡献）；脚本 _tools/fix_c4_limitations.py；备份 _backup/CLIP_pre_C4.docx、_backup/CLIP-revised_pre_C4.txt；改后验证 txt+docx 各含第四条限制且 docx 段首 "Limitations." 完好 | C4 |
+| 2026-10-17 | C13：全部 46 条参考文献逐条联网核实并修正——原 4 条怀疑均不成立（ref 3 全零 DOI 为 LWW 真实格式、ref 4 在线先发 2026 卷+2025 DOI 正常、ref 6 Springer 文章号 100 真实、ref 38 AAAI 40(7) 格式正确），但顺藤摸瓜查出 16+ 处元数据错误（标题/作者数/卷页/年份/DOI 大小写/第一作者）；refs 13–37 中 22 条arXiv 引用替换为同行评议正式版本，仅 3 条真预印本保留 arXiv [Preprint]；孤儿 ref 6 在 §3.6 原型平滑段补引 (6)；正文 CDRF-Net→CDRFF-Net；txt §4.4 第四条限制同步 | C13 |
+| 2026-10-17 | 技术注：脚本 _tools/fix_c13_refs.py（txt 43 条条目替换 + 孤儿补引 + CDRF→CDRFF，docx 19 条共享条目统一 + CDRF→CDRFF 5 处）+ _tools/fix_c13_claude_md.py；备份 _backup/CLIP_pre_C13.docx、_backup/CLIP-revised_pre_C13.txt；改后验证 10/10 PASS（refs 1-46 齐、无 CDRF-Net、(6) 已引、DOI 小写、无 10.1016/J.BSPC、溺水条目未动） | C13 |
+| 2026-10-17 | C18：发现 docx 参考文献表混入 7 条无关条目（溺水/摘要分类/皮肤病/肿瘤/超声乳化手柄/PromptMix/组合检索）且 docx §2.2 与 txt 综述重构分叉——仅登记风险，待作者决定删重编或整体替换，投稿前必处理 | C18 |
+| 2026-10-17 | C18：执行选项 (a)——删 7 条污染条目（Saunders 溺水/Courvoisier/Tao/Jha/Kim/PromptMix/组合检索），docx 文献表 26→19 条，全文 30 处 [n] 按映射重编号（结论 [26]→[19]）；三处外科处理：§1 删 [19,20]（背景句保留）、§1 [7-10]→[6] 移至长尾支持句、§3 LOCS III 误引 [13]→[2]；脚本 _tools/fix_c18_docx_refs.py；备份 _backup/CLIP_pre_C18.docx；验证 8/8 PASS（19 条文献、30 引用全落 [1-19]、零污染关键词、CDRFF 完好、C4 四条限制完好） | C18 |
+| 2026-10-17 | 技术注：fix_c18_docx_refs.py 跨 run 替换须按索引操作——python-docx p.runs 每次访问返回新 wrapper，`is` 身份比较永远 False 会静默跳过清空（前两次运行残留双 [6]，从 _backup/CLIP_pre_C18.docx 还原后第三次 8/8 PASS） | C18 |
+| 2026-10-17 | C19 登记：txt（46 条 (n) 编号、§2.2 扩展综述）与 docx（19 条 [n] 编号、§2.2 压缩版）引用体系分叉残余——docx 已自洽可投；txt 综述若回迁 docx 需统一编号，投稿稿只保留单一编号体系 | C19 |
+| 2026-10-18 | C19 了结：用户确认“确定以 CLIP-revised为投稿底稿”，txt（46 条 (n)、扩展综述）为唯一投稿底稿；docx 19 条 [n] 版本定为 legacy 被取代、不再改动 | C19 |
+| 2026-10-18 | C20：Vancouver 首现顺序全文重编号——首现序 [1,2,3,4,5,7,8,12,9,10,11,13..45,6,46] 改为严格递增 1..46（7→6、8→7、12→8、13-45→12-44、6→45、46 不变）；正文 38 处引用改写（(7,8,12)→(6-8)、(13-23)→(12-22)、(24-26)→(23-25)、(27-40)→(26-39)、孤儿句 (6)→(45)），46 条文献表按新序重排；脚本 _tools/fix_c20_vancouver_renumber.py；备份 _backup/CLIP-revised_pre_C20.txt；验证 20+ 项 PASS | C20 |
+| 2026-10-18 | 技术注：fix_c20_vancouver_renumber.py 首版漏装订 body2（改写后正文未拼入输出，仅文献表重排，导致首版 FAIL），从 _backup/CLIP-revised_pre_C20.txt 还原后修补装配行二次运行 ALL PASS；改稿脚本务必核对最终 out_lines 含改写后正文 | C20 |
+| 2026-10-18 | 复审（除排版/打包图表外）：46 条引用全被引、首现严格递增、关键数字 86.76/0.42/0.88/64.20/79.50/86.1/1171/1673/权重/伦理号全一致、Table 1-4 与 Figure 1-4 正文交叉引用齐、关键词 6 个合规、无 TODO 残留；遗留问题：Data Availability 占位 GitHub 链接 https://github.com/1pzd/-Project.git（L237）需换真实仓库+权重（=Section D 代码开源项）；SAGER 性别仅定性一句；补充材料仍写 upon request（Frontiers 建议直接上传）；§3.6/§4.4 仍描述 Prototype Smoothing 为已实现技术（A3 已从贡献删除，审稿人或索取消融——轻度风险） | 复审 |

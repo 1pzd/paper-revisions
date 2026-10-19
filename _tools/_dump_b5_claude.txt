@@ -1,0 +1,10 @@
+28: - [ ] **B5. 版式** — Word/LaTeX 稿需**页码 + 行号**、单倍行距。
+61: ## D. 加分项
+122: | 2026-10-18 | C19 了结：用户确认“确定以 CLIP-revised为投稿底稿”，txt（46 条 (n)、扩展综述）为唯一投稿底稿；docx 19 条 [n] 版本定为 legacy 被取代、不再改动 | C19 |
+123: | 2026-10-18 | C20：Vancouver 首现顺序全文重编号——首现序 [1,2,3,4,5,7,8,12,9,10,11,13..45,6,46] 改为严格递增 1..46（7→6、8→7、12→8、13-45→12-44、6→45、46 不变）；正文 38 处引用改写（(7,8,12)→(6-8)、(13-23)→(12-22)、(24-26)→(23-25)、(27-40)→
+124: | 2026-10-18 | 技术注：fix_c20_vancouver_renumber.py 首版漏装订 body2（改写后正文未拼入输出，仅文献表重排，导致首版 FAIL），从 _backup/CLIP-revised_pre_C20.txt 还原后修补装配行二次运行 ALL PASS；改稿脚本务必核对最终 out_lines 含改写后正文 | C20 |
+125: | 2026-10-18 | 复审（除排版/打包图表外）：46 条引用全被引、首现严格递增、关键数字 86.76/0.42/0.88/64.20/79.50/86.1/1171/1673/权重/伦理号全一致、Table 1-4 与 Figure 1-4 正文交叉引用齐、关键词 6 个合规、无 TODO 残留；遗留问题：Data Availability 占位 GitHub 链接 https://g
+126: | 2026-10-18 | C21：G/NC 术语统一——Results 4.3 删除 G↔NC 等同映射（(NC1 to NC3)、G3 (NC4)）；§3.5 类别分布 (NC2 and NC3)/(NC5 and NC6)→(G1 and G2)/(G4 and G5)；Fig 4 图题补 “G0 to G5” 并与正文统一 G 标签；“progression of nuclear opa
+127: | 2026-10-18 | C22：Discussion §5 措辞降调——(1) L205 删'has learned the continuous progression'确定性结论，改为'consistent with ... exploits ordinal grade-order information ... do not establish ... biological progr
+128: | 2026-10-18 | C23：比较论证强化——§2.2 结尾扩展三组件对三种失效模式的组合价值论证；§4.1 扩展与 CDRFF-Net/LOCS III hybrid 的架构性区别 + §4.2 对照佐证 + 回指 §3.7 自行复现说明（原文保留）；条件项医学 VLM 实验对比留待真实算力/时间（不编造数据）。脚本 _tools/fix_c23_compare.py；备份 _backu
+TOTAL 128

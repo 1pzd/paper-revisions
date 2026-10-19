@@ -1,0 +1,59 @@
+=== FIRST 34 LINES (title/abstract/keywords) ===
+1: CLIP-CAT: Vision-Language Fusion for Ordinal Cataract Grading on Limited Data
+2: 
+3: Shuang Wang1*, Zhida Pang1
+4: 
+5: 1School of Computer Science and Engineering, Northeastern University, Shenyang, China
+6: 
+7: *Correspondence:
+8: Shuang Wang
+9: wangsh@mail.neu.edu.cn
+10: 
+11: ORCID: Zhida Pang, https://orcid.org/0009-0000-0788-1232
+12: 
+13: Keywords: cataract grading, vision-language models, limited data learning, ordinal regression, class imbalance, medical image analysis
+14: 
+15: Abstract
+16: 
+17: Cataract is the leading cause of reversible blindness worldwide, yet automated grading remains challenging due to limited labeled data, severe class imbalance, and the inherently ordinal progression of the disease. Existing convolutional neural network-based approaches commonly treat cataract grading as nominal classification, overlooking the ordinal disease structure and under-utilizing medical prior knowledge. We propose CLIP-CAT, a vision-language model that leverages medical text prompts to alleviate data scarcity and improve grading performance. Our approach combines language-guided global semantic representations and localized fine-grained feature learning in a unified framework. To mitigate the limitations of global encoders in detecting subtle lesions, we introduce Adaptive Patching for enhanced local representation. In addition, we incorporate a Bidirectional Rank-Aware Loss that encourages unimodal probability distributions, effectively modeling the inherent ordinality of the task. Experiments on 1,673 slit-lamp images demonstrate that CLIP-CAT achieves 86.76% accuracy and 0.42 mean squared error, outperforming generic backbones and task-specific grading methods. Per-grade analysis and five-fold cross-validation confirm that errors concentrate on adjacent grades and that performance is stable across data splits.
+18: 
+19: 1 Introduction
+20: 
+21: Cataracts are the primary cause of reversible blindness worldwide, yet current diagnostic workflows rely heavily on subjective manual grading (1). This labor-intensive approach creates a need for objective tools that can support standardized grading research. Consequently, developing computer-aided diagnosis systems is a research priority, while their clinical value must be established through external validation.
+22: 
+23: Slit-lamp imaging visualizes lens opacity directly and underpins the Lens Opacities Classification System III (LOCS III) grading standard (2), whereas fundus photography and optical coherence tomography angiography primarily characterize retinal and choroidal structures and offer only indirect evidence of lens status. Automated cataract grading systems are therefore typically developed on slit-lamp or anterior-segment images (3-5), and we target this modality to stay consistent with the imaging modality used by these grading systems.
+24: 
+25: Despite the success of deep learning in binary classification tasks, fine-grained grading remains challenging due to three limitations. First, standard classification losses treat ordinal disease stages as independent classes, ignoring the progressive nature of severity (for example, Grade 0 is less severe than Grade 5). Second, the inherent long-tailed distribution of medical data can bias models toward majority classes, reducing representation of rare, severe cases. Third, models that rely mainly on low-level feature statistics may have limited semantic supervision for transfer and generalization (7,8,12).
+26: 
+27: To address these challenges, we propose CLIP-CAT, a vision-language framework that mimics the clinical diagnostic workflow. The main contributions of this study are two-fold:
+28: 
+29: First, we introduce a multi-granularity vision-language framework that fuses global semantic anchors with local adaptive patching. This approach mimics the global-scan, local-focus strategy of human experts, enhancing the model's ability to detect subtle lesions missed by traditional encoders.
+30: 
+31: Second, we incorporate a Bidirectional Rank-Aware Loss into the classification objective. The loss penalizes the expected absolute distance between the predicted distribution and the ground-truth grade, placing it in the established family of expected-distance ordinal objectives (7,8); its bidirectional character reflects the symmetry of the absolute distance, which charges under- and overestimation alike. The contribution is therefore combinatorial: this rank objective is coupled with language-aligned semantic anchors and a multi-granularity encoder so that predictions respect the strict logical progression of disease severity.
+32: 
+33: 2 Related Work
+34: 
+
+=== KEY NUMBERS CHECK ===
+86.76 -> 9 hits
+86.87 -> 0 hits
+0.42 -> 11 hits
+0.88 -> 2 hits
+64.20 -> 3 hits
+79.50 -> 3 hits
+1,171 -> 1 hits
+1171 -> 3 hits
+1,673 -> 6 hits
+1673 -> 3 hits
+86.1 -> 3 hits
+291/335 -> 0 hits
+2026-ZFKY-008 -> 1 hits
+BiomedCLIP -> 1 hits
+four concrete limitations -> 1 hits
+CDRFF-Net -> 7 hits
+CDRF-Net -> 0 hits
+
+=== ABSTRACT STATS ===
+abstract line 16 len=0
+keywords line 13: Keywords: cataract grading, vision-language models, limited data learning, ordinal regression, class imbalance, medical image analysis
+kw count=6

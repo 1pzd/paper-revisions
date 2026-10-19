@@ -1,0 +1,28 @@
+C22 VERIFY (Discussion tone fix)
+REPLACED x1: The low mean squared error (0.42) and the concentr... -> The low mean squared error (0.42) and the concentr...
+REPLACED x1: five-fold cross-validation indicates stable perfor... -> five-fold cross-validation suggests that performan...
+REPLACED x1: The ablation study confirms that... -> The ablation study indicates that...
+
+PASS KEEP '86.76' x9 | got=9
+PASS KEEP '0.42' x11 | got=11
+PASS KEEP '78.1%' x2 | got=2
+PASS KEEP '2.1%' x2 | got=2
+PASS KEEP '1,673' x6 | got=6
+FAIL KEEP '90.9%' x1 | got=3
+PASS KEEP '86.1%' x3 | got=3
+PASS KEEP 'CDRFF-Net' x7 | got=7
+PASS KEEP 'G = ⌈(NC + C)/2⌉' x2 | got=2
+PASS KEEP '(46)' x1 | got=1
+PASS KEEP 'four concrete limitations' x1 | got=1
+PASS KEEP 'BiomedCLIP' x1 | got=1
+PASS GONE 'has learned the continuous progression' | got=0
+PASS GONE 'effectively prevent overfitting' | got=0
+PASS GONE 'study confirms' | got=0
+PASS NEW 'consistent with the interpretation' | got=1
+PASS NEW 'cannot rule out overfitting or center-sp' | got=1
+PASS NEW 'study indicates' | got=1
+PASS NEW 'exploits ordinal grade-order information' | got=1
+PASS BACKUP_EXISTS
+PASS LINES_390 | lines=390
+
+RESULT: FAIL

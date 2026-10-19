@@ -1,0 +1,121 @@
+=== frontiers format lines ===
+=== frontiers CJK format lines ===
+94: 整篇文档应采用单倍行距，并包含页码和行号，以便于审阅。
+129: 对于已接受但尚未发表的作品，请使用“即将出版”代替页码。
+=== txt L1-21 ===
+1: CLIP-CAT: Vision-Language Fusion for Ordinal Cataract Grading on Limited Data
+2: 
+3: Shuang Wang1*, Zhida Pang1
+4: 
+5: 1School of Computer Science and Engineering, Northeastern University, Shenyang, China
+6: 
+7: *Correspondence:
+8: Shuang Wang
+9: wangsh@mail.neu.edu.cn
+10: 
+11: ORCID: Zhida Pang, https://orcid.org/0009-0000-0788-1232
+12: 
+13: Keywords: cataract grading, vision-language models, limited data learning, ordinal regression, class imbalance, medical image analysis
+14: 
+15: Abstract
+16: 
+17: Cataract is the leading cause of reversible blindness worldwide, yet automated grading remains challenging due to limited labeled data, severe class i
+18: 
+19: 1 Introduction
+20: 
+21: Cataracts are the primary cause of reversible blindness worldwide, yet current diagnostic workflows rely heavily on subjective manual grading (1). Thi
+=== txt headings L19-238 ===
+15: Abstract
+19: 1 Introduction
+33: 2 Related Work
+35: 2.1 Deep Learning for Cataract Grading
+39: 2.2 Vision-Language Models in Medicine
+43: 3 Materials and Methods
+45: 3.1 Framework Overview and Problem Definition
+59: 3.2 Visual Encoder
+63: 3.2.1 Global Branch
+69: 3.2.2 Adaptive Patching Local Branch
+79: 3.2.3 Attention-Based Fusion
+83: 3.3 Medical Prompt Engineering Mechanism
+87: 3.3.1 Prompts as Semantic Supervision
+91: 3.3.2 Prompt Construction
+107: 3.3.3 Semantic Projection and Probability Calculation
+111: 3.4 Bidirectional Rank-Aware Loss
+115: 3.5 Dataset Description and Ethics Statement
+121: 3.6 Implementation Details
+133: 3.7 Baseline Implementation and Evaluation Protocol
+147: 3.8 Evaluation Protocol and Reporting
+157: 4 Results
+159: 4.1 Comparison with Baseline and Task-Specific Methods
+169: 4.2 Ablation Study
+179: 4.3 Per-Grade Performance and Error Analysis
+187: 4.4 Generalizability and Limitations
+199: 5 Discussion
+213: 6 Conclusion
+217: Acknowledgments
+223: Author Contributions
+227: Conflict of Interest
+231: Funding
+235: Data Availability
+=== txt L330-390 (tables+legends) ===
+330: 
+331: 46. Zhang H, Cisse M, Dauphin YN, Lopez-Paz D. Mixup: beyond empirical risk minimization. In: International Conference on Learning Representations (ICLR). (2018). doi: 10.48550/arxiv.1710.09412
+332: 
+333: 
+334: Tables
+335: 
+336: Table 1. Performance comparison with baseline and task-specific models. Values are means over 3 independent runs (seeds 42, 123, and 2024); values for CLIP-CAT are reported as mean ± standard deviatio
+337: 
+338: Method	Backbone	Accuracy (%)	MSE	Kappa
+339: ResNet50	CNN	78.45	1.24	0.72
+340: DenseNet121	CNN	81.20	0.98	0.76
+341: ViT-B/16	Transformer	82.55	0.85	0.79
+342: CLIP (zero-shot)	CLIP ViT-L/14	64.20	1.85	0.52
+343: CLIP (linear probe)	CLIP ViT-L/14	79.50	1.05	0.73
+344: ResNet50 + CORAL	CNN + Ordinal	80.30	0.90	0.75
+345: CDRFF-Net	Task-specific	83.10	0.72	0.81
+346: LOCS III hybrid	Task-specific	82.65	0.78	0.80
+347: CLIP-CAT (ours)	Vision-Language	86.76 ± 0.20	0.42 ± 0.02	0.88 ± 0.01
+348: 
+349: Table 2. Ablation study demonstrating the incremental improvements of each module. Rank Loss denotes the Bidirectional Rank-Aware Loss; Imbalance Strategy denotes the joint use of class-weighted sampl
+350: 
+351: No.	CLIP Base	Local Patches	Rank Loss	Imbalance Strategy	Accuracy (%)	MSE
+352: 1	✓	-	-	-	80.15	1.00
+353: 2	✓	✓	-	-	82.40	0.92
+354: 3	✓	✓	✓	-	84.85	0.55
+355: 4	✓	✓	✓	✓	86.76	0.42
+356: 5	✓	✓ (random)	-	-	81.30	0.98
+357: 6	✓	✓ (random)	✓	✓	85.92	0.46
+358: 7	✓ (no text)	✓	✓	✓	85.10	0.50
+359: 
+360: Table 3. Per-grade precision, recall, and F1 score of CLIP-CAT on the held-out test subset. Single-run results (seed 42).
+361: 
+362: Grade	Precision (%)	Recall (%)	F1 (%)	Support
+363: G0	89.6	93.5	91.5	46
+364: G1	93.2	90.8	92.0	152
+365: G2	89.2	82.7	85.8	110
+366: G3	53.8	70.0	60.9	20
+367: G4	37.5	75.0	50.0	4
+368: G5	66.7	66.7	66.7	3
+369: Macro avg	71.7	79.8	74.5	335
+370: Weighted avg	88.1	86.9	87.3	335
+371: 
+372: Table 4. Confusion matrix on the held-out test set (335 images). Rows represent true grades, columns represent predicted grades. Single-run results (seed 42).
+373: 
+374: 	G0	G1	G2	G3	G4	G5
+375: G0	43	3	0	0	0	0
+376: G1	5	138	8	1	0	0
+377: G2	0	7	91	10	2	0
+378: G3	0	0	3	14	2	1
+379: G4	0	0	0	1	3	0
+380: G5	0	0	0	0	1	2
+381: 
+382: Figure Legends
+383: 
+384: Figure 1. Overview of the proposed CLIP-CAT framework: the global CLIP encoder and the local adaptive patching branch are fused via the attention mechanism, aligned with grade-specific medical prompts
+385: 
+386: Figure 2. Illustration of the bidirectional distance penalty mechanism of the rank loss: mass on grades below the true grade incurs an underestimation penalty, and mass above incurs an overestimation 
+387: 
+388: Figure 3. Entropy-based patch selection: patches with high texture heterogeneity concentrate on the lens opacity region and are selected as the top-K informative local patches (K equals 6).
+389: 
+390: Figure 4. Long-tailed distribution of the 1,673-image dataset over the six severity grades G0 to G5: the two head grades (G1 and G2) cover 78.1% of samples, while the two most severe grades (G4 and G5

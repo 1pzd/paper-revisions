@@ -1,0 +1,23 @@
+backup exists, skip: D:\修改论文\_backup\CLIP_pre_C18.docx
+deleted ref paragraphs: 7
+  DEL [Drowning Prevention]: Saunders J C ,Oporia F ,Lukaszyk C , et al.Leave no one behind: An African persp
+  DEL [Courvoisier]: Courvoisier S D ,Garcia B D ,Buclin P C , et al. Beyond human gold standards: A 
+  DEL [EnFuseNet]: Tao Y ,Xiao R ,Shi Y , et al. EnFuseNet: A Dual-Module approach combining tail-C
+  DEL [Blue Books]: Jha T ,Tanveer N . Global standards, local realities: addressing disparities in 
+  DEL [active sentry and ozil handpiece]: Kim W H ,Lee E J ,Kim I , et al. Comparison of active sentry and ozil handpiece 
+  DEL [PromptMix]: Chen Y ,Zhang Q ,Shi X , et al. PromptMix: LLM-aided prompt learning for general
+  DEL [composed image retrieval]: Chen Z ,Zhao Z ,Su F , et al. Data-efficient generalization for zero-shot compos
+pre-fix A17 drop [19,20]: 1
+generic renumber: 30 tokens changed, 0 empty dropped
+post-fix A9 move [6] to long-tail sentence: 1
+post-fix A24 LOCS III miscitation [9]->[2]: 1
+[docx] saved
+V1 PASS: 19 ref entries
+V2 PASS: zero contamination keywords
+V3 PASS: all 30 citation tokens within [1-19]: ['[1]', '[2]', '[3-5]', '[6]', '[10,11]', '[7,8]', '[9]', '[4]', '[5]', '[10,11]', '[3-5]', '[12]', '[13]', '[14]', '[15]', '[16]', '[4,11]', '[2]', '[10]', '[2]', '[17]', '[10,11]', '[18]', '[4,5,7-9,11,12]', '[10]', '[12]', '[11]', '[4]', '[5]', '[19]']
+V4 PASS: full citation token sequence matches the renumber map
+V5 PASS: CDRFF-Net intact
+V6 PASS: C4 four-limitations paragraph intact
+V7 PASS: conclusion [19] present, no [19,20]/[20] leftovers
+V8 PASS: no bracket/spacing artifacts
+VERIFY: 8/8 PASS

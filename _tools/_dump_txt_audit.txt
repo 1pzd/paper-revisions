@@ -1,0 +1,56 @@
+TOTAL LINES: 386
+--- headings (any line that looks like N or N.M at start) ---
+19: 1 Introduction
+33: 2 Related Work
+35: 2.1 Deep Learning for Cataract Grading
+39: 2.2 Vision-Language Models in Medicine
+43: 3 Materials and Methods
+45: 3.1 Framework Overview and Problem Definition
+59: 3.2 Visual Encoder
+63: 3.2.1 Global Branch
+69: 3.2.2 Adaptive Patching Local Branch
+79: 3.2.3 Attention-Based Fusion
+83: 3.3 Medical Prompt Engineering Mechanism
+87: 3.3.1 Prompts as Semantic Supervision
+91: 3.3.2 Prompt Construction
+107: 3.3.3 Semantic Projection and Probability Calculation
+111: 3.4 Bidirectional Rank-Aware Loss
+115: 3.5 Dataset Description and Ethics Statement
+121: 3.6 Implementation Details
+133: 3.7 Baseline Implementation and Evaluation Protocol
+147: 3.8 Evaluation Protocol and Reporting
+157: 4 Results
+159: 4.1 Comparison with Baseline and Task-Specific Methods
+169: 4.2 Ablation Study
+179: 4.3 Per-Grade Performance and Error Analysis
+187: 4.4 Generalizability and Limitations
+199: 5 Discussion
+213: 6 Conclusion
+348: 1	✓	-	-	-	80.15	1.00
+349: 2	✓	✓	-	-	82.40	0.92
+350: 3	✓	✓	✓	-	84.85	0.55
+351: 4	✓	✓	✓	✓	86.76	0.42
+352: 5	✓	✓ (random)	-	-	81.30	0.98
+353: 6	✓	✓ (random)	✓	✓	85.92	0.46
+354: 7	✓ (no text)	✓	✓	✓	85.10	0.50
+--- special sections ---
+Introduction -> lines [19]
+Discussion -> lines [199]
+Conclusion -> lines [213, 215, 219]
+Ethic -> lines [115, 119]
+Data Availability -> lines [235]
+Author Contributions -> lines [223]
+Funding -> lines [231, 233]
+Conflict -> lines [227, 229]
+Acknowledg -> lines [217, 221]
+Supplement -> lines [219]
+AI  -> lines [139, 219, 261, 267, 271, 275, 299, 315]
+artificial intelligence -> lines [249, 315]
+ChatGPT -> lines [219]
+Large Language -> lines [289]
+sex -> lines [117]
+--- citation tokens ---
+cited numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 1993, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+missing (uncited refs): []
+out-of-range: [1993, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+ref entry lines: count=46 first=[241, 243, 245] last=[324, 326, 328]

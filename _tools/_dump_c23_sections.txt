@@ -1,0 +1,51 @@
+TOTAL_LINES 390
+=== L33-57 (2 Related Work) ===
+33: 2 Related Work
+34: 
+35: 2.1 Deep Learning for Cataract Grading
+36: 
+37: Cataract grading has evolved from hand-crafted features to deep learning. Convolutional neural network backbones (9,10) improve feature extraction but may carry domain bias, and Vision Transformers (11) can be data-hungry when adapted to limited datasets. Task-specific systems incorporate clinical structure: CDRFF-Net fuses discriminative region features with ordinal regression (4), and a LOCS III-based hybrid model aligns outputs with the clinical scale (5), while rank-consistent and kappa-based objectives penalize cross-grade errors (6,7). Nevertheless, existing grading systems continue to face the challenge of representing the intrinsic ordinal nature of disease severity (3-7).
+38: 
+39: 2.2 Vision-Language Models in Medicine
+40: 
+41: Vision-language models such as CLIP (8) align images and text in a shared embedding space. Subsequent work scales contrastive pretraining and data pipelines (12-22), extends objectives toward multimodal generation and matching (23-25), and develops prompt-based and adapter-based adaptation for downstream transfer (26-39). In medicine, these models have mainly been applied in radiology and pathology, while ophthalmic adoption remains limited. In cataract assessment, deep grading systems built on clinical scales have been developed for slit-lamp and retro-illumination photographs (40), nuclear cataract diagnosis from slit-lamp video (41), and cortical cataract grading with clinical sub-scores (42), but these pipelines remain CNN- or Transformer-based classifiers without language-aligned semantics. Standard contrastive alignment, moreover, does not preserve the ordinal topology of cataract severity. Unlike prior pipelines that attach ordinal losses to convolutional neural network features (4,6,7), this study couples vision-language alignment with a Bidirectional Rank-Aware Loss and grade-specific medical prompts.
+42: 
+43: 3 Materials and Methods
+44: 
+45: 3.1 Framework Overview and Problem Definition
+46: 
+47: As illustrated in Figure 1, the proposed CLIP-CAT framework is designed to mimic the cognitive workflow of clinical ophthalmologists: Global Assessment, Local Refinement, and Semantic Reasoning. The architecture consists of three synergistic components:
+48: 
+49: Dual-Stream Visual Encoder: Integrating a global CLIP-based branch to capture anatomical structure with a local Adaptive Patching branch to isolate subtle lesion details. These streams are fused dynamically via an attention mechanism.
+50: 
+51: Medical Prompt Engineering: Unlike traditional one-hot labels, we utilize expert clinical descriptions as semantic anchors. This projects visual features into a language-aligned space, enabling the model to understand medical severity.
+52: 
+53: Bidirectional Rank-Aware Loss: To address the ordinal nature of cataracts, we integrate a distance-weighted rank loss that penalizes predictions based on their expected ordinal distance from the true grade, encouraging a unimodal probability distribution.
+54: 
+55: Given a slit-lamp image x, the model predicts the cataract severity grade G ∈ {G0, G1, G2, G3, G4, G5}, where the severity is computed as the average of the nuclear color grade (NC, ranging from NC1 to NC6) and the cortical opacity grade (C, ranging from C0 to C5), both following the LOCS III standard (2), rounded up to the nearest integer. Specifically, with NC and C encoded as integers from 0 to 5 (NC1 to NC6 encoded as 0 to 5; C0 to C5 encoded as 0 to 5), the severity grade is G = ⌈(NC + C)/2⌉. Higher grades indicate more severe cataracts.
+56: 
+57: Our objective is to predict a probability distribution that not only maximizes accuracy but also respects the ordinal topology of the disease. Specifically, the model must minimize the expectation of the ordinal distance loss, ensuring that severe cross-grade errors (for example, confusing Grade 0 with Grade 4) are penalized more heavily than adjacent errors (6).
+58: 
+=== L157-177 (4.1 + 4.2 start) ===
+157: 4 Results
+158: 
+159: 4.1 Comparison with Baseline and Task-Specific Methods
+160: 
+161: We benchmarked our CLIP-CAT against generic convolutional neural network backbones (ResNet50, DenseNet121), a Transformer backbone (ViT-B/16), CLIP transfer baselines (zero-shot and linear probing), an ordinal regression baseline (ResNet50 plus CORAL), and two task-specific cataract grading methods (CDRFF-Net and a LOCS III-based hybrid), corresponding to the backbone, transfer, ordinal, and task-specific methods described above (4,5,7-11). The quantitative results are summarized in Table 1.
+162: 
+163: CLIP-CAT outperforms the strongest baseline (CDRFF-Net, 83.10%) by 3.66 percentage points in accuracy (86.76% versus 83.10%) and exceeds the best generic backbone (ViT-B/16, 82.55%) by 4.21 percentage points. A nonparametric bootstrap 95% confidence interval for CLIP-CAT accuracy (10,000 resamples of the 335 test images) is [83.3%, 90.4%]. While convolutional neural network architectures like ResNet50 provide a reasonable baseline (78.45%), their relatively high expected-grade mean squared error (1.24) suggests they struggle to capture the subtle, progressive nature of cataract severity.
+164: 
+165: A critical contribution of our method is the reduction in expected-grade mean squared error (MSE_exp) to 0.42. In the context of ordinal regression, MSE_exp reflects the distance between the ground truth and the probabilistic expectation of the predicted distribution. An MSE_exp of 0.42 implies an average prediction deviation of approximately 0.65 grades. This indicates a bounded error property: even when CLIP-CAT misclassifies a sample, the predicted probability distribution typically centers on the immediate neighboring grade, rather than making catastrophic errors. The corresponding discrete-grade MSE (MSE_hard, computed from argmax predictions) is 0.17, reflecting that 90.9% of hard prediction errors land on adjacent grades (see Section 4.3). This result does not establish clinical safety; it only describes the error pattern observed in this dataset and should not be interpreted as evidence of readiness for clinical use. Furthermore, the high Kappa coefficient (0.88) is consistent with strong agreement between model outputs and the study's expert-derived labels under the reported evaluation design (6).
+166: 
+167: Applying CLIP (8) in a zero-shot manner yields only 64.20% accuracy, and a linear probe on frozen CLIP features reaches 79.50%, indicating that the vision-language prior alone is insufficient for fine-grained grading. Equipping ResNet50 with the CORAL ordinal objective (7) raises accuracy to 80.30% and reduces mean squared error from 1.24 to 0.90, consistent with the value of ordinal modeling in this experiment, yet it remains well below CLIP-CAT. Among task-specific methods, CDRFF-Net (4) and the LOCS III-based hybrid model (5) achieve 83.10% and 82.65%, respectively. Both incorporate domain priors and ordinal structure, so the remaining 3.66 percentage point accuracy advantage and lower mean squared error (0.42 versus 0.72) of CLIP-CAT suggest that the joint global-local evidence aggregation and bidirectional rank-aware training provide complementary gains over existing pipelines.
+168: 
+169: 4.2 Ablation Study
+170: 
+171: To verify the contribution of each component in our framework, we conducted a step-by-step ablation study. The results, detailed in Table 2, demonstrate the additive value of each module.
+172: 
+173: The CLIP Base configuration (Row 1)—the global CLIP ViT-L/14 branch with grade-specific medical prompts, fine-tuned as described in Section 3.6 with the local branch, rank loss, and imbalance handling all disabled—yields an accuracy of 80.15%, distinct from the zero-shot (64.20%) and linear-probe (79.50%) transfer settings in Table 1. While promising, the domain gap between natural images and slit-lamp photography limits its precision. Incorporating the Adaptive Patching Local Branch improves accuracy to 82.40%. This confirms that fine-grained local features are essential for capturing early-stage lesions that are often lost in global semantic tokens. The integration of the rank loss provides the most significant improvement in error control, reducing the mean squared error from 0.92 to 0.55. This validates that explicitly penalizing non-ordinal predictions forces the model to learn the topological order of severity, effectively eliminating large-span outliers. Finally, combining the weighted sampling and Focal Loss strategies addresses the long-tail issue, further boosting the accuracy to 86.76% and achieving the lowest mean squared error of 0.42.
+174: 
+175: Replacing entropy-based top-K selection with random patch sampling lowers accuracy from 82.40% to 81.30% in the two-module setting and from 86.76% to 85.92% in the full model, while slightly increasing mean squared error. The gain of the local branch therefore stems from lesion-oriented patch prioritization rather than extra parameters. The entropy statistic is used here as an image-selection heuristic, not as a validated physiological marker. In this dataset, patches with high texture heterogeneity concentrate on the lens opacity region and are selected as the top-K informative local patches without manual annotation. As shown in Figure 3, patches with high texture heterogeneity concentrate on the lens opacity region and are selected as the top-K informative local patches.
+176: 
+177: Replacing the LOCS III text descriptions with learnable class tokens lowers accuracy from 86.76% to 85.10% and increases mean squared error from 0.42 to 0.50. The benefit of prompt engineering therefore reflects the medical semantics of the descriptions rather than merely adding class-specific parameters.
+178: 

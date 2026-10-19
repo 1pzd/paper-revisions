@@ -1,0 +1,60 @@
+BACKUP created: D:\修改论文\_backup\CLIP-revised_pre_C25.txt
+R1 OK
+R2 OK
+R3 OK
+R4 OK
+R5 OK
+R6 OK
+R7 OK
+R8 OK
+R9 OK
+R10 OK
+R11 OK
+R12 OK
+--- VERIFY ---
+LINES 390
+FORBIDDEN opacity density, color, and spatial pattern   count=0 PASS
+FORBIDDEN emerging visual symptoms                      count=0 PASS
+FORBIDDEN affecting daily visual function               count=0 PASS
+FORBIDDEN requiring intervention                        count=0 PASS
+FORBIDDEN severe vision impairment                      count=0 PASS
+FORBIDDEN auxiliary contrastive term                    count=0 PASS
+FORBIDDEN for stable class centers                      count=0 PASS
+FORBIDDEN to stabilize training                         count=0 PASS
+NEW density and extent of lens opacity                           count=1 PASS
+NEW barely perceptible under slit-lamp examination               count=1 PASS
+NEW of clearly increased density                                 count=1 PASS
+NEW high density involving most of the lens area                 count=1 PASS
+NEW occupying nearly the entire lens                             count=1 PASS
+NEW with near-total lens opacification.                          count=1 PASS
+NEW training-stability diagnostics under small batch sizes       count=1 PASS
+NEW do not contribute any term to the training objective         count=1 PASS
+NEW rather than promoted by an auxiliary loss                    count=1 PASS
+NEW do not enter the training objective                          count=1 PASS
+NEW illumination mode of individual frames (diffuse versus focal slit-beam) count=1 PASS
+NEW rather than from dedicated optic-section or retro-illumination views count=1 PASS
+NEW The composite combines only NC and C                         count=1 PASS
+NEW were not scored in this cohort                               count=1 PASS
+NEW a composite of the two axes annotated in this cohort         count=1 PASS
+KEEP 86.76                                                   exp=9 got=9 PASS
+KEEP 0.42                                                    exp=11 got=11 PASS
+KEEP 90.9%                                                   exp=3 got=3 PASS
+KEEP 78.1%                                                   exp=2 got=2 PASS
+KEEP 13.7%                                                   exp=1 got=1 PASS
+KEEP 2.1%                                                    exp=2 got=2 PASS
+KEEP 1,673                                                   exp=6 got=6 PASS
+KEEP 1171                                                    exp=3 got=3 PASS
+KEEP 1,171                                                   exp=1 got=1 PASS
+KEEP 86.1                                                    exp=3 got=3 PASS
+KEEP 0.88                                                    exp=2 got=2 PASS
+KEEP 64.20                                                   exp=3 got=3 PASS
+KEEP 79.50                                                   exp=3 got=3 PASS
+KEEP CDRFF-Net                                               exp=7 got=7 PASS
+KEEP CDRF-Net                                                exp=0 got=0 PASS
+KEEP BiomedCLIP                                              exp=1 got=1 PASS
+KEEP four concrete limitations                               exp=1 got=1 PASS
+KEEP ⌈(NC + C)/2⌉                                            exp=2 got=2 PASS
+KEEP (45)                                                    exp=1 got=1 PASS
+KEEP The total loss is L_total = L_focal + λ·L_rank, where λ=1.0 balances the two terms. exp=1 got=1 PASS
+KEEP t1: A slit-lamp image showing G1 (mild) cataract severity, with slight lens opacity visible on slit-lamp examination. exp=1 got=1 PASS
+RESULT: ALL PASS

@@ -1,0 +1,139 @@
+L241 entry: 1. World Health Organization. World report on vision. Geneva: World He
+L243 entry: 2. Chylack LT, Wolfe JK, Singer DM, Leske MC, Bullimore MA, Bailey IL,
+L245 entry: 3. Panthier C, Zeboulon P, Rouger H, Bijon J, Gatinel D. CATALYZE: a d
+L247 entry: 4. Liu X, Song W, Zhang Y, Wu G. Complementary discriminative region f
+L249 entry: 5. Tang G, Zhang J, Du Y, Jiang D, Qi Y, Zhou N. Artificial intelligen
+L251 entry: 6. Chen J, Chen H, Qin B, Li J, Wang J, Su B. Uniformity preserving tr
+L253 entry: 7. de la Torre J, Puig D, Valls A. Weighted kappa loss function for mu
+L255 entry: 8. Cao W, Mirjalili V, Raschka S. Rank consistent ordinal regression f
+L257 entry: 9. He K, Zhang X, Ren S, Sun J. Deep residual learning for image recog
+L259 entry: 10. Huang G, Liu Z, van der Maaten L, Weinberger KQ. Densely connected
+L261 entry: 11. Dosovitskiy A, Beyer L, Kolesnikov A, Weissenborn D, Zhai X, Unter
+L263 entry: 12. Radford A, Kim JW, Hallacy C, Ramesh A, Goh G, Agarwal S, et al. L
+L265 entry: 13. Jia C, Yang Y, Xia Y, Chen YT, Parekh Z, Pham H, et al. Scaling up
+L267 entry: 14. Zhai X, Wang X, Mustafa B, Steiner A, Keysers D, Kolesnikov A, et 
+L269 entry: 15. Mu N, Kirillov A, Wagner D, Xie S. SLIP: Self-supervision meets la
+L271 entry: 16. Pham H, Dai Z, Ghiasi G, Kawaguchi K, Liu H, Yu AW, et al. Combine
+L273 entry: 17. Singh A, Hu R, Goswami V, Couairon G, Galuba W, Rohrbach M, et al.
+L275 entry: 18. Zhai X, Mustafa B, Kolesnikov A, Beyer L. Sigmoid loss for languag
+L277 entry: 19. Sun Q, Fang Y, Wu L, Wang X, Cao Y. EVA-CLIP: Improved training te
+L279 entry: 20. Cherti M, Beaumont R, Wightman R, Wortsman M, Ilharco G, Gordon C,
+L281 entry: 21. Gadre SY, Ilharco G, Fang A, Hayase J, Smyrnis G, Nguyen T, et al.
+L283 entry: 22. Schuhmann C, Beaumont R, Vencu R, Gordon C, Wightman R, Cherti M, 
+L285 entry: 23. Xu H, Xie S, Tan XE, Huang PY, Howes R, Sharma V, et al. Demystify
+L287 entry: 24. Li J, Li D, Xiong C, Hoi S. BLIP: Bootstrapping language-image pre
+L289 entry: 25. Li J, Li D, Savarese S, Hoi S. BLIP-2: Bootstrapping language-imag
+L291 entry: 26. Yu J, Wang Z, Vasudevan V, Yeung L, Seyedhosseini M, Wu Y. CoCa: C
+L293 entry: 27. Zhou K, Yang J, Loy CC, Liu Z. Learning to prompt for vision-langu
+L295 entry: 28. Zhou K, Yang J, Loy CC, Liu Z. Conditional prompt learning for vis
+L297 entry: 29. Khattak MU, Rasheed H, Maaz M, Khan S, Khan FS. MaPLe: Multi-modal
+L299 entry: 30. Zhang R, Fang R, Zhang W, Gao P, Li K, Dai J, et al. Tip-Adapter: 
+L301 entry: 31. Khattak MU, Wasim ST, Naseer M, Khan S, Yang MH, Khan FS. Self-sup
+L303 entry: 32. Shu M, Nie W, Huang DA, Yu Z, Goldstein T, Anandkumar A, et al. Te
+L305 entry: 33. Rao Y, Zhao W, Chen G, Tang Y, Zhu Z, Huang G, et al. DenseCLIP: L
+L307 entry: 34. Sun Z, Fang Y, Wu T, Zhang P, Zang Y, Kong S, et al. Alpha-CLIP: A
+L309 entry: 35. Zhang B, Zhang P, Dong X, Zang Y, Wang J. Long-CLIP: Unlocking the
+L311 entry: 36. Tschannen M, Gritsenko A, Wang X, Naeem MF, Alabdulmohsin I, Parth
+L313 entry: 37. Chuang YS, Li Y, Wang D, Yeh CF, Lyu K, Raghavendra R, et al. Meta
+L315 entry: 38. Huang W, Wu A, Yang Y, Luo X, Yang Y, Naseem U, et al. LLM2CLIP: p
+L317 entry: 39. Ilharco G, Wortsman M, Wightman R, Gordon C, Carlini N, Taori R, e
+L319 entry: 40. Gao P, Geng S, Zhang R, Ma T, Fang R, Zhang Y, et al. CLIP-Adapter
+L321 entry: 41. Son KY, Ko J, Kim E, Lee SY, Kim MJ, Han J, et al. Deep learning-b
+L322 entry: 42. Shimizu E, Tanji M, Nakayama S, Ishikawa T, Agata N, Yokoiwa R, et
+L323 entry: 43. Wang J, Xu Z, Zheng W, Ying H, Chen T, Liu Z, et al. A transformer
+L324 entry: 44. Lin T-Y, Goyal P, Girshick R, He K, Dollár P. Focal loss for dense
+L326 entry: 45. Loshchilov I, Hutter F. Decoupled weight decay regularization. In:
+L328 entry: 46. Zhang H, Cisse M, Dauphin YN, Lopez-Paz D. Mixup: beyond empirical
+--- ALL paren-numeric matches (whole file) ---
+L21 1 '(1)' yearish=False
+L23 2 '(2)' yearish=False
+L23 3-5 '(3-5)' yearish=False
+L25 7,8,12 '(7,8,12)' yearish=False
+L31 7,8 '(7,8)' yearish=False
+L37 9,10 '(9,10)' yearish=False
+L37 11 '(11)' yearish=False
+L37 4 '(4)' yearish=False
+L37 5 '(5)' yearish=False
+L37 7,8 '(7,8)' yearish=False
+L37 3-5,7,8 '(3-5,7,8)' yearish=False
+L41 12 '(12)' yearish=False
+L41 13-23 '(13-23)' yearish=False
+L41 24-26 '(24-26)' yearish=False
+L41 27-40 '(27-40)' yearish=False
+L41 41 '(41)' yearish=False
+L41 42 '(42)' yearish=False
+L41 43 '(43)' yearish=False
+L41 4,7,8 '(4,7,8)' yearish=False
+L55 2 '(2)' yearish=False
+L57 7 '(7)' yearish=False
+L65 11,12 '(11,12)' yearish=False
+L77 9 '(9)' yearish=False
+L85 27-33 '(27-33)' yearish=False
+L89 2 '(2)' yearish=False
+L113 44 '(44)' yearish=False
+L113 7,8 '(7,8)' yearish=False
+L123 45 '(45)' yearish=False
+L127 6 '(6)' yearish=False
+L141 8 '(8)' yearish=False
+L143 4,5 '(4,5)' yearish=False
+L161 4,5,8-12 '(4,5,8-12)' yearish=False
+L165 7 '(7)' yearish=False
+L167 12 '(12)' yearish=False
+L167 8 '(8)' yearish=False
+L167 4 '(4)' yearish=False
+L167 5 '(5)' yearish=False
+L211 46 '(46)' yearish=False
+L241 2019 '(2019)' yearish=True
+L243 1993 '(1993)' yearish=True
+L243 6 '(6)' yearish=False
+L245 2025 '(2025)' yearish=True
+L245 3 '(3)' yearish=False
+L247 2026 '(2026)' yearish=True
+L249 2025 '(2025)' yearish=True
+L251 2026 '(2026)' yearish=True
+L251 3 '(3)' yearish=False
+L253 2018 '(2018)' yearish=True
+L255 2020 '(2020)' yearish=True
+L257 2016 '(2016)' yearish=True
+L259 2017 '(2017)' yearish=True
+L261 2021 '(2021)' yearish=True
+L263 2021 '(2021)' yearish=True
+L265 2021 '(2021)' yearish=True
+L267 2022 '(2022)' yearish=True
+L269 2022 '(2022)' yearish=True
+L271 2023 '(2023)' yearish=True
+L273 2022 '(2022)' yearish=True
+L275 2023 '(2023)' yearish=True
+L277 2023 '(2023)' yearish=True
+L279 2023 '(2023)' yearish=True
+L281 2023 '(2023)' yearish=True
+L283 2022 '(2022)' yearish=True
+L285 2024 '(2024)' yearish=True
+L287 2022 '(2022)' yearish=True
+L289 2023 '(2023)' yearish=True
+L291 2022 '(2022)' yearish=True
+L293 2022 '(2022)' yearish=True
+L293 9 '(9)' yearish=False
+L295 2022 '(2022)' yearish=True
+L297 2023 '(2023)' yearish=True
+L299 2022 '(2022)' yearish=True
+L301 2023 '(2023)' yearish=True
+L303 2022 '(2022)' yearish=True
+L305 2022 '(2022)' yearish=True
+L307 2024 '(2024)' yearish=True
+L309 2024 '(2024)' yearish=True
+L311 2025 '(2025)' yearish=True
+L313 2025 '(2025)' yearish=True
+L315 2026 '(2026)' yearish=True
+L315 7 '(7)' yearish=False
+L317 2021 '(2021)' yearish=True
+L319 2024 '(2024)' yearish=True
+L319 2 '(2)' yearish=False
+L321 2022 '(2022)' yearish=True
+L321 2 '(2)' yearish=False
+L322 2023 '(2023)' yearish=True
+L323 2024 '(2024)' yearish=True
+L323 3 '(3)' yearish=False
+L324 2017 '(2017)' yearish=True
+L326 2019 '(2019)' yearish=True
+L328 2018 '(2018)' yearish=True

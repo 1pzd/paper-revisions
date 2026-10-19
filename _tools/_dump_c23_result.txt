@@ -1,0 +1,15 @@
+=== C23 RESULT ===
+A_2.2_positioning OK x1
+B_4.1_distinction OK x1
+=== VERIFY ===
+A_2.2_positioning_APPLIED FAIL
+B_4.1_distinction_APPLIED PASS
+SELFREPRO_NOTE_3.7 PASS
+SELFREPRO_PTR_4.1 PASS
+NEW_A_ANCHOR PASS
+NEW_B_ANCHOR PASS
+C4_LIMITATIONS PASS
+NUMBERS_UNCHANGED PASS
+LINES 390
+BACKUP SKIP_EXISTS D:\修改论文\_backup\CLIP-revised_pre_C23.txt
+=== COUNTS pre==post for all 37 literals ===

@@ -1,0 +1,8 @@
+ENC=utf-8-sig bytes=55814 lines=386
+HEAD line 239: 'References'
+HEAD line 330: 'Tables'
+HEAD line 378: 'Figure Legends'
+entry-like lines: 46
+first 5: [(241, '1'), (243, '2'), (245, '3'), (247, '4'), (249, '5')]
+last 5: [(322, '42'), (323, '43'), (324, '44'), (326, '45'), (328, '46')]
+nums sequential 1..46: True

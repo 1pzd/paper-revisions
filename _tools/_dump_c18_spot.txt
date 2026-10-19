@@ -1,0 +1,23 @@
+P24: Given a slit-lamp image x, the model predicts the cataract severity grade G ∈ {G0, G1, G2, G3, G4, G5}, where the severity is computed as the average of the nuclear color grade (NC, ranging from NC1 to NC6) and the cortical opacity grade (C, ranging from C0 to C5), both following the LOCS III standard [2], rounded up to the nearest integer. Specifically, with NC and C encoded as integers from 0 to 5 (NC1 to NC6 encoded as 0 to 5; C0 to C5 encoded as 0 to 5), the severity grade is G = ⌈(NC + C)/2⌉. Higher grades indicate more severe cataracts.
+
+1. World Health Organization. World report on vision. Geneva: World Health Organization (2019).
+2. Chylack LT, Wolfe JK, Singer DM, Leske MC, Bullimore MA, Bailey IL, et al. The Lens Opacities Classification System III. Arch Ophthalmol (1993) 111(6):831-6.
+3. Panthier C, Zeboulon P, Rouger H, Bijon J, Gatinel D. CATALYZE: a deep learning approach for cataract assessment and grading on SS-OCT images. J Cataract Refract Surg (2025) 51(3):222-8. doi: 10.1097/j.jcrs.0000000000001598
+4. Liu X, Song W, Zhang Y, Wu G. Complementary discriminative region feature fusion network with ordinal regression for fine-grained nuclear cataract grading in AS-OCT images. Biomed Signal Process Control (2026) 112(Pt A):108455. doi: 10.1016/j.bspc.2025.108455
+5. Tang G, Zhang J, Du Y, Jiang D, Qi Y, Zhou N. Artificial intelligence in cataract grading system: a LOCS III-based hybrid model achieving high-precision classification. Front Cell Dev Biol (2025) 13:1669696. doi: 10.3389/fcell.2025.1669696
+6. Chen J, Chen H, Qin B, Li J, Wang J, Su B. Uniformity preserving transfer for visual prompt tuning under long-tailed distribution. Int J Comput Vis (2026) 134(3):100. doi: 10.1007/s11263-025-02712-z
+7. He K, Zhang X, Ren S, Sun J. Deep residual learning for image recognition. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR). (2016). p. 770-8. doi: 10.1109/cvpr.2016.90
+8. Huang G, Liu Z, van der Maaten L, Weinberger KQ. Densely connected convolutional networks. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR). (2017). p. 4700-8. doi: 10.1109/cvpr.2017.243
+9. Dosovitskiy A, Beyer L, Kolesnikov A, Weissenborn D, Zhai X, Unterthiner T, et al. An image is worth 16x16 words: Transformers for image recognition at scale. In: International Conference on Learning Representations (ICLR). (2021). doi: 10.48550/arxiv.2010.11929
+10. de la Torre J, Puig D, Valls A. Weighted kappa loss function for multi-class classification of ordinal data in deep learning. Pattern Recognit Lett (2018) 105:144-54. doi: 10.1016/j.patrec.2017.05.018
+11. Cao W, Mirjalili V, Raschka S. Rank consistent ordinal regression for neural networks with application to age estimation. Pattern Recognit Lett (2020) 140:325-31. doi: 10.1016/j.patrec.2020.11.008
+12. Radford A, Kim JW, Hallacy C, Ramesh A, Goh G, Agarwal S, et al. Learning transferable visual models from natural language supervision. In: International Conference on Machine Learning (ICML). (2021). p. 8748-63.
+13. Gao P, Geng S, Zhang R, Ma T, Fang R, Zhang Y, et al. CLIP-Adapter: better vision-language models with feature adapters. Int J Comput Vis (2024) 132(2):581-95. doi: 10.1007/s11263-023-01891-x
+14. Son KY, Ko J, Kim E, Lee SY, Kim MJ, Han J, et al. Deep learning-based cataract detection and grading from slit-lamp and retro-illumination photographs. Ophthalmol Sci (2022) 2(2):100147. doi: 10.1016/j.xops.2022.100147
+15. Shimizu E, Tanji M, Nakayama S, Ishikawa T, Agata N, Yokoiwa R, et al. AI-based diagnosis of nuclear cataract from slit-lamp videos. Sci Rep (2023) 13:22046. doi: 10.1038/s41598-023-49563-7
+16. Wang J, Xu Z, Zheng W, Ying H, Chen T, Liu Z, et al. A transformer-based knowledge distillation network for cortical cataract grading. IEEE Trans Med Imaging (2024) 43(3):1089-1101. doi: 10.1109/tmi.2023.3327274
+17. Lin T-Y, Goyal P, Girshick R, He K, Dollár P. Focal loss for dense object detection. In: Proceedings of the IEEE International Conference on Computer Vision (ICCV). (2017). p. 2980-8. doi: 10.1109/iccv.2017.324
+18. Loshchilov I, Hutter F. Decoupled weight decay regularization. In: International Conference on Learning Representations (ICLR). (2019). doi: 10.48550/arxiv.1711.05101
+19. Zhang H, Cisse M, Dauphin YN, Lopez-Paz D. Mixup: beyond empirical risk minimization. In: International Conference on Learning Representations (ICLR). (2018). doi: 10.48550/arxiv.1710.09412
+
+TOTAL_REFS=19

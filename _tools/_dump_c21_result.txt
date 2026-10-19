@@ -1,0 +1,35 @@
+C21 G/NC TERMINOLOGY FIX VERIFY
+lines_before=390 lines_after=390
+PASS line_count_390 lines=390
+PASS no_NC1_NC3_map 
+PASS no_NC4_paren 
+PASS no_NC2_NC3_head 
+PASS no_NC1_mildest 
+PASS no_NC5_NC6_severe 
+PASS no_nuclear_progression 
+PASS G1_G2_head_present 
+PASS G0_mildest_present 
+PASS G4_G5_severe_present 
+PASS fig4_caption_G 
+PASS lens_opacity_present 
+PASS def_ceil_avg_x2 count=2
+PASS def_sec31_intact 
+PASS def_sec35_intact 
+PASS num_86.76_x9 count=9
+PASS num_0.42_x11 count=11
+PASS num_78.1%_x2 count=2
+PASS num_13.7%_x1 count=1
+PASS num_91.9%_x1 count=1
+PASS num_1673_x6 count=6
+PASS num_1171_x3 count=3
+PASS num_1171_x1 count=1
+PASS num_2.1%_x2 count=2
+PASS num_n_0=229_x1 count=1
+PASS num_n_1=758_x1 count=1
+PASS num_n_2=549_x1 count=1
+PASS num_13.94_x1 count=1
+PASS num_18.59_x1 count=1
+PASS num_CDRFF-Net_x7 count=7
+PASS no_CDRF_single 
+PASS backup_exists 
+RESULT: ALL PASS

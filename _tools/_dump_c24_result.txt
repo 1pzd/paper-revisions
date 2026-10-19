@@ -1,0 +1,20 @@
+REPLACED x1: 'https://github.com/1pzd/-Project.git' -> 'https://github.com/1pzd/-Project'
+REPLACED x1: 'custom Python scripts (_tools/draw_figs.py)' -> 'custom Python scripts (Matplotlib)'
+---
+LINES_390 PASS 390
+NO_GIT_SUFFIX PASS 
+URL_BROWSER_FORM PASS 1
+NO_INTERNAL_PATH PASS 
+MATPLOTLIB_x1 PASS 1
+BACKUP_EXISTS PASS 
+KEEP[86.76] PASS got=9 expect=9
+KEEP[0.42] PASS got=11 expect=11
+KEEP[78.1%] PASS got=2 expect=2
+KEEP[2.1%] PASS got=2 expect=2
+KEEP[1,673] PASS got=6 expect=6
+KEEP[CDRFF-Net] PASS got=7 expect=7
+KEEP[BiomedCLIP] PASS got=1 expect=1
+KEEP[four concrete limitations] PASS got=1 expect=1
+KEEP[Gdef] PASS 2
+NO_SINGLE_F_CDRF PASS 
+VERDICT: ALL PASS

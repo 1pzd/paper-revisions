@@ -1,0 +1,16 @@
+13: Keywords: cataract grading, vision-language models, limited data learning, ordinal regression, class imbalance, medical image analysis
+14: 
+15: Abstract
+16: 
+17: Cataract is the leading cause of reversible blindness worldwide, yet automated grading remains challenging due to limited labeled data, severe class imbalance, and the inherently ordinal progression of the disease. Existing convolutional neural network-based approaches commonly treat cataract grading as nominal classification, overlooking the ordinal disease structure and under-utilizing medical prior knowledge. We propose CLIP-CAT, a vision-language model that leverages medical text prompts to alleviate data scarcity and improve grading performance. Our approach combines language-guided global semantic representations and localized fine-grained feature learning in a unified framework. To mitigate the limitations of global encoders in detecting subtle lesions, we introduce Adaptive Patching for enhanced local representation. In addition, we incorporate a Bidirectional Rank-Aware Loss that encourages unimodal probability distributions, effectively modeling the inherent ordinality of the task. Experiments on 1,673 slit-lamp images demonstrate that CLIP-CAT achieves 86.76% accuracy and 0.42 mean squared error, outperforming generic backbones and task-specific grading methods. Per-grade analysis and five-fold cross-validation confirm that errors concentrate on adjacent grades and that performance is stable across data splits.
+18: 
+19: 1 Introduction
+20: 
+233: This research received no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.
+234: 
+235: Data Availability
+236: 
+237: The clinical image dataset used in this study is not publicly available because it contains confidential patient information and is subject to institutional restrictions; requests for access may be considered by the corresponding authors upon reasonable request and with approval of the participating hospital. The images were handled as confidential clinical data throughout the study. The source code used in this study is available at https://github.com/1pzd/-Project.git.
+238: 
+239: References
+240: 
